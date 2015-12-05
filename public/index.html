@@ -30,7 +30,7 @@
 <!-- SET THE CONTROLLER -->
 <body ng-controller="mainController">
 	<div class="container">
-ffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
 		<!-- HEADER AND TODO COUNT -->
 		<div class="jumbotron text-center">
 			<h1>Let's maintain budget<span class="label label-info">{{ todos.length }}</span></h1>
@@ -44,9 +44,12 @@ ffffffffffffffffffffffffffffffffffffffffffffffffffffff
 
 				<!-- LOOP OVER THE TODOS IN $scope.todos -->
 				<div class="checkbox" ng-repeat="todo in todos">
-					<label>
-						<input type="checkbox" ng-click="deleteTodo(todo._id)"> {{ todo.text }}
-					</label>
+				<ul class="list-group row">
+     <li class="list-group-item col-xs-6">{{todo.text}}</li>
+     <li class="list-group-item col-xs-6">{{todo.amount}}</li>
+     <li class="list-group-item col-xs-6">{{todo.date}}</li>
+     
+</ul>
 				</div>
 
 				<p class="text-center" ng-show="loading">
@@ -65,7 +68,17 @@ ffffffffffffffffffffffffffffffffffffffffffffffffffffff
 						<!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
 						<input type="text" class="form-control input-lg text-center" placeholder="budget description" ng-model="formData.text">
 					</div>
+					
+					<div class="form-group">
 
+						<!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+						<input type="text" class="form-control input-lg text-center" placeholder="amount" ng-model="formData.amount">
+					</div>
+					<div class="form-group">
+						<!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+						<input type="text" class="form-control input-lg text-center" placeholder="date" ng-model="formData.date">
+					</div>
+,
 					<!-- createToDo() WILL CREATE NEW TODOS -->
 					<button type="submit" class="btn btn-primary btn-lg" ng-click="createNewGood()">Add</button>
 				</form>
