@@ -5,12 +5,6 @@
     <title>Sign-in, then Tabs: Nightly</title>
     
     
-    
-    
-    
-    
-    
-    
   </head>
 
   <body>
@@ -100,17 +94,32 @@
     </script>
 
     <script id="templates/home.html" type="text/ng-template">
-      <ion-view view-title="Home">
-        <ion-content padding="true">
-          <p>Example of Ionic tabs. Navigate to each tab, and
-          navigate to child views of each tab and notice how
-          each tab has its own navigation history.</p>
-          <p>
-            <a class="button icon icon-right ion-chevron-right" href="#/tab/facts">Scientific Facts</a>
-          </p>
+ <ion-view view-title="Sign-In">
+        <ion-content>
+          <div class="list">
+            <label class="item item-input">
+              <span class="input-label">Description</span>
+              <input type="text" ng-model="formData.text"">
+            </label>
+            <label class="item item-input">
+              <span class="input-label">Amount</span>
+              <input type="text" ng-model="formData.amount">
+            </label>
+			<label class="item item-input">
+              <span class="input-label">Date</span>
+              <input type="text" ng-model="formData.date">
+            </label>
+          </div>
+          <div class="padding">
+            <button class="button button-block button-positive" ng-click="createNewGood()">
+              Save
+            </button>
+            <p class="text-center">
+              <a href="#/forgot-password">Forgot password</a>
+            </p>
+          </div>
         </ion-content>
-      </ion-view>
-    </script>
+      </ion-view>    </script>
 
     <script id="templates/facts.html" type="text/ng-template">
       <ion-view view-title="Facts">
