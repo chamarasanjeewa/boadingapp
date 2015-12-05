@@ -93,25 +93,43 @@
       </ion-view>
     </script>
 
-    <script id="templates/home.html" type="text/ng-template">
- <ion-view view-title="Sign-In">
+    <script id="templates/purchasedList.html" type="text/ng-template">
+ <ion-view view-title="Purchase info list">
+
+        <ion-content>
+
+        <div class="row" ng-repeat="item in itemList">
+  <div class="col">{{item.text}}!</div>
+  <div class="col">{{item.amount}}!</div>
+  <div class="col">{{item.date}}!</div>
+  
+</div>
+             
+          
+        </ion-content>
+      </ion-view>    
+      </script>
+
+ <script id="templates/home.html" type="text/ng-template">
+ <ion-view view-title="Purchase info">
         <ion-content>
           <div class="list">
             <label class="item item-input">
               <span class="input-label">Description</span>
-              <input type="text" ng-model="formData.text"">
+              <input type="text" ng-model="formData.text" required>
+
             </label>
             <label class="item item-input">
               <span class="input-label">Amount</span>
               <input type="text" ng-model="formData.amount">
             </label>
-			<label class="item item-input">
+      <label class="item item-input">
               <span class="input-label">Date</span>
-              <input type="text" ng-model="formData.date">
+              <input type="date" ng-model="formData.date">
             </label>
           </div>
           <div class="padding">
-            <button class="button button-block button-positive" ng-click="createNewGood()">
+            <button class="button button-block button-positive" ng-click="createPurchaseItem()">
               Save
             </button>
             <p class="text-center">
@@ -120,6 +138,9 @@
           </div>
         </ion-content>
       </ion-view>    </script>
+
+
+
 
     <script id="templates/facts.html" type="text/ng-template">
       <ion-view view-title="Facts">
