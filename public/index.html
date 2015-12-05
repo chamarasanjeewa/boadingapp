@@ -30,26 +30,37 @@
 <!-- SET THE CONTROLLER -->
 <body ng-controller="mainController">
 	<div class="container">
+		<div id="todo-form" class="row">
+			<div class="col-sm-8 col-sm-offset-2 text-center">
+				<form>
+					<div class="form-group">
 
-		<!-- HEADER AND TODO COUNT -->
-		<div class="jumbotron text-center">
-			<h1>Let's maintain budget<span class="label label-info">{{ todos.length }}</span></h1>
+						<!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+						<input type="text" class="form-control input-lg " placeholder="budget description" ng-model="formData.text">
+					</div>
+					
+					<div class="form-group">
+
+						<!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+						<input type="text" class="form-control input-lg " placeholder="amount" ng-model="formData.amount">
+					</div>
+					<div class="form-group">
+						<!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+						<input type="text" class="form-control input-lg" placeholder="date" ng-model="formData.date">
+					</div>
+,
+					<!-- createToDo() WILL CREATE NEW TODOS -->
+					<button type="submit" class="btn btn-primary btn-lg" ng-click="createNewGood()">Add</button>
+				</form>
+			</div>
 		</div>
-
-		<!-- TODO LIST -->
-		<div id="todo-list" class="row">
-			<div class="col-sm-4 col-sm-offset-4">
-
-				
-
-				<!-- LOOP OVER THE TODOS IN $scope.todos -->
-				<div class="checkbox" ng-repeat="todo in todos">
-				<ul class="list-group row">
-     <li class="list-group-item col-xs-6">{{todo.text}}</li>
-     <li class="list-group-item col-xs-6">{{todo.amount}}</li>
-     <li class="list-group-item col-xs-6">{{todo.date}}</li>
-     
-</ul>
+	<div id="todo-list" class="row">
+	<div class="row" ng-repeat="todo in todos">
+  <div class="col-md-4">{{todo.text}}</div>
+  <div class="col-md-4">{{todo.amount}}</div>
+  <div class="col-md-4">{{todo.date}}</div>
+</div>
+		
 				</div>
 
 				<p class="text-center" ng-show="loading">
@@ -59,37 +70,7 @@
 			</div>
 		</div>
 
-		<!-- FORM TO CREATE TODOS -->
-		<div id="todo-form" class="row">
-			<div class="col-sm-8 col-sm-offset-2 text-center">
-				<form>
-					<div class="form-group">
-
-						<!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
-						<input type="text" class="form-control input-lg text-center" placeholder="budget description" ng-model="formData.text">
-					</div>
-					
-					<div class="form-group">
-
-						<!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
-						<input type="text" class="form-control input-lg text-center" placeholder="amount" ng-model="formData.amount">
-					</div>
-					<div class="form-group">
-						<!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
-						<input type="text" class="form-control input-lg text-center" placeholder="date" ng-model="formData.date">
-					</div>
-,
-					<!-- createToDo() WILL CREATE NEW TODOS -->
-					<button type="submit" class="btn btn-primary btn-lg" ng-click="createNewGood()">Add</button>
-				</form>
-			</div>
-		</div>
-
-		<div class="text-center text-muted">
-			<p>A demo by <a href="http://scotch.io">Scotch</a>.</p>
-			<p>Read the <a href="http://scotch.io/tutorials/javascript/creating-a-single-page-todo-app-with-node-and-angular">tutorial</a>.</p>
-		</div>
-
+	
 	</div>
 
 </body>
