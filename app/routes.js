@@ -1,13 +1,15 @@
-var Todo = require('./models/todo');
+var purchased = require('./models/todo');
+//var purchased = require('./models/purchased');
 
-function getTodos(res){
-	Todo.find(function(err, todos) {
+
+function getPurchased(res){
+	purchased.find(function(err, purchased) {
 
 			// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 			if (err)
 				res.send(err)
 
-			res.json(todos); // return all todos in JSON format
+			res.json(purchased); // return all todos in JSON format
 		});
 };
 
@@ -15,40 +17,40 @@ module.exports = function(app) {
 
 	// api ---------------------------------------------------------------------
 	// get all todos
-	app.get('/api/todos', function(req, res) {
+	app.get('/api/purchased', function(req, res) {
 
 		// use mongoose to get all todos in the database
-		getTodos(res);
+		getPurchased(res);
 	});
 
 	// create todo and send back all todos after creation
-	app.post('/api/todos', function(req, res) {
+	app.post('/api/purchased', function(req, res) {
 
 		// create a todo, information comes from AJAX request from Angular
-		Todo.create({
+		purchased.create({
 			text : req.body.text,
 			amount: req.body.amount,
-			date:req.body.date,
-			done : false
-		}, function(err, todo) {
+			createdDate:req.body.date
+			
+		}, function(err, purchased) {
 			if (err)
 				res.send(err);
 
 			// get and return all the todos after you create another
-			getTodos(res);
+			getPurchased(res);
 		});
 
 	});
 
 	// delete a todo
-	app.delete('/api/todos/:todo_id', function(req, res) {
-		Todo.remove({
-			_id : req.params.todo_id
-		}, function(err, todo) {
+	app.delete('/api/purchased/:purchased_id', function(req, res) {
+		purchased.remove({
+			_id : req.params.purchased_id
+		}, function(err, purchased) {
 			if (err)
 				res.send(err);
 
-			getTodos(res);
+			getPurchased(res);
 		});
 	});
 

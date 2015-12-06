@@ -83,13 +83,13 @@ angular.module('ionicApp', ['ionic'])
 .factory('PurchaseService', ['$http',function($http) {
     return {
       get : function() {
-        return $http.get('/api/todos');
+        return $http.get('/api/purchased');
       },
       create : function(todoData) {
-        return $http.post('/api/todos', todoData);
+        return $http.post('/api/purchased', todoData);
       },
       delete : function(id) {
-        return $http.delete('/api/todos/' + id);
+        return $http.delete('/api/purchased/' + id);
       }
     }
   }])
@@ -147,7 +147,7 @@ angular.module('ionicApp', ['ionic'])
     // use the service to get all the todos
     PurchaseService.get()
       .success(function(data) {
-        debugger;
+        
         $scope.itemList = data;
         $scope.loading = false;
       });
