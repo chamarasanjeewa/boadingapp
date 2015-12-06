@@ -86,7 +86,7 @@ angular.module('ionicApp', ['ionic'])
         return $http.get('/api/purchased');
       },
       create : function(todoData) {
-        return $http.post('/api/purchased', todoData);
+        return $http.post('/api/sendMessage', todoData);
       },
       delete : function(id) {
         return $http.delete('/api/purchased/' + id);
