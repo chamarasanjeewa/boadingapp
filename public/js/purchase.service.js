@@ -7,7 +7,7 @@ function PurchaseService($http) {
         return $http.get('/api/purchased');
       },
       create : function(todoData) {
-        return $http.post('/api/sendMessage', todoData);
+        return $http.post('/api/purchased', todoData);
       },
       delete : function(id) {
         return $http.delete('/api/purchased/' + id);
