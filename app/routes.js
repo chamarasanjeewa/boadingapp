@@ -1,8 +1,8 @@
 var purchased = require('./models/todo');
 //var purchased = require('./models/purchased');
-var twilio = require('twilio'),
-client = twilio('chamara.sanjeewa@gmail.com', 'Sanju7681'),
-cronJob = require('cron').CronJob;
+//var twilio = require('twilio'),
+//client = twilio('chamara.sanjeewa@gmail.com', 'Sanju7681'),
+//cronJob = require('cron').CronJob;
 
 function getPurchased(res){
 	purchased.find(function(err, purchased) {
@@ -29,12 +29,12 @@ module.exports = function(app) {
 
 	
 
-app.post('/api/sendMessage', function(req, res) {
+// app.post('/api/sendMessage', function(req, res) {
 
-client.sendMessage( { to:'+94712188862', from:'+94712188862', body:'Hello! Hope you’re having a good day!' },
- function( err, data ) {});
+// client.sendMessage( { to:'+94712188862', from:'+94712188862', body:'Hello! Hope you’re having a good day!' },
+//  function( err, data ) {});
 	
-	});
+// 	});
 
 
 	app.post('/api/purchased', function(req, res) {
