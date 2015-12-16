@@ -6,7 +6,7 @@ purchasedListController.$inject = ['$scope','$state','PurchaseService'];
 function purchasedListController($scope,$state,PurchaseService) {
   
     $scope.loading = true;
-
+$scope.totalSum=0;
     // GET =====================================================================
     // when landing on the page, get all todos and show them
     // use the service to get all the todos
@@ -15,6 +15,10 @@ function purchasedListController($scope,$state,PurchaseService) {
         
        $scope.itemList = data;
         $scope.loading = false;
+             $scope.totalSum = Object.keys($scope.itemList).map(function(k){
+                 return +$scope.itemList[k].amount;
+             }).reduce(function(a,b){ return a + b },0);
+             debugger;
       });
 
     // CREATE ==================================================================

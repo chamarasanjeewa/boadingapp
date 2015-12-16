@@ -1,11 +1,13 @@
-var purchased = require('./models/todo');
-//var purchased = require('./models/purchased');
-//var twilio = require('twilio'),
-//client = twilio('chamara.sanjeewa@gmail.com', 'Sanju7681'),
-//cronJob = require('cron').CronJob;
+var purchasedGood = require('./models/todo');
+var UserModel = require('./models/user.js');
+var UserProfileModel = require('./models/userProfile.js');
+
+var requestify = require('requestify');
+var logincontroller=require('./controllers/account.js');
+
 
 function getPurchased(res){
-	purchased.find(function(err, purchased) {
+    purchasedGood.find(function(err, purchased) {
 
 			// if there is an error retrieving, send the error. nothing after res.send(err) will execute
 			if (err)
@@ -15,10 +17,116 @@ function getPurchased(res){
 		});
 };
 
+function signInUser(req,res){
+var signInUser=req.body;
+    console.log(signInUser.username);
+
+    UserModel.findOne({ userName: signInUser.username }, function(err, selectedUser) {
+        if (err) {
+
+            throw err
+        };
+
+        if(selectedUser!=null && selectedUser.passwordHash==signInUser.password){
+            req.session.regenerate(function(){
+
+
+                req.session.user = selectedUser;
+
+            });
+        console.log(req.session)
+            console.log(req.session.user)
+
+            res.json(signInUser);
+
+}else{
+
+    var passwordMissMatchError = new Error('user name or password does not match') ;
+    console.log('passwordMissMatchError')
+    //throw passwordMissMatchError
+    res.status(401);
+    res.json(passwordMissMatchError);
+}
+
+    });
+
+}
+function registerUser(user,res){
+
+var newUser=new UserModel({
+    email: user.email,
+    userName:user.username,
+    passwordHash: user.password,// todo hash it
+    passwordSalt: 'dd'});
+
+newUser.save(function(err) {
+    console.log('log user'+newUser._id)
+    if (err) {
+       res.send(err);
+        return;
+    } else{
+        registerUserProfile(newUser._id);
+       // res.json(user);
+    }
+
+  console.log('User created!');
+});
+
+    function registerUserProfile(userId){
+        console.log('inside register userprofile'+userId)
+        var newUserProfile=new UserProfileModel({
+            email: user.email,
+            firstName: user.firstName,// todo hash it
+            lastName: user.lastName,
+            phoneNumber:user.phoneNumber,
+            userId:userId
+        });
+
+        newUserProfile.save(function(err) {
+            if (err) {
+             res.send(err);
+             return res;
+            }
+            res.json(user);
+
+            console.log('User profile created!');
+        });
+
+
+    }
+      
+}
+
+var sendNotificationMessage=function(){
+
+	console.log('purchse')
+	requestify.get('http://smsc.vianett.no/V3/CPA/MT/MT.ashx?username=ktvgroup&password=sms7524&tel=+94712188862&msg=testbudgetmanager&msgid=1&SenderAddress=chamara&SenderAddressType=5')
+  	.then(function(response) {
+      // Get the response body (JSON parsed or jQuery object for XMLs)
+     var response= response.getBody();
+     console.log(response)
+  });
+	}
+
+
 module.exports = function(app) {
 
 	// api ---------------------------------------------------------------------
 	// get all todos
+
+	app.post('/api/login', function(req, res) {
+		console.log('serverside login')
+        signInUser(req,res);
+
+	});
+
+	app.post('/api/register', function(req, res) {
+		console.log('serverside login')
+        registerUser(req.body,res)	;	
+	});
+
+
+
 	app.get('/api/purchased', function(req, res) {
 
 		// use mongoose to get all todos in the database
@@ -27,23 +135,12 @@ module.exports = function(app) {
 
 	// create todo and send back all todos after creation
 
-	
-
-// app.post('/api/sendMessage', function(req, res) {
-
-// client.sendMessage( { to:'+94712188862', from:'+94712188862', body:'Hello! Hope you’re having a good day!' },
-//  function( err, data ) {});
-	
-// 	});
-
-
 	app.post('/api/purchased', function(req, res) {
-
 		// create a todo, information comes from AJAX request from Angular
-		purchased.create({
+        purchasedGood.create({
 			text : req.body.text,
 			amount: req.body.amount,
-			createdDate:req.body.date
+			purchasedDate:req.body.date
 			
 		}, function(err, purchased) {
 			if (err)

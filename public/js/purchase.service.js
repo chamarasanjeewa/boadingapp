@@ -8,9 +8,24 @@ function PurchaseService($http) {
       },
       create : function(todoData) {
         return $http.post('/api/purchased', todoData);
+        //ret return $http.post('/api/purchased', todoData);
+
       },
       delete : function(id) {
         return $http.delete('/api/purchased/' + id);
+      },
+      signIn:function(signInData) {
+          debugger;
+        return $http.post('/api/login', signInData);
+
+      },
+
+       register:function(registerData) {
+           debugger;
+        return $http.post('/api/register', registerData);
+
       }
     }
   }
+
+

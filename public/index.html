@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html >
   <head>
     <meta charset="UTF-8">
     <title>Sign-in, then Tabs: Nightly</title>
-    
+    <style  ></style>
     
   </head>
 
@@ -17,12 +18,17 @@
     <title>Sign-in, Then Tabs Example</title>
 
     <link href="/lib/ionic/css/ionic.css" rel="stylesheet">
+      <link href="/css/style.css" rel="stylesheet">
     <script src="/lib/ionic/js/ionic.bundle.js"></script>
-      
+
+      <script src="/lib/ionic/js/angular/angular-messages.js"></script>
  <script src="js/app.js"></script>
  <script src="js/purchase.service.js"></script>
  <script src="js/purchaseList.controller.js"></script>
   <script src="js/purchaseview.controller.js"></script>
+  <script src="js/signin.controller.js"></script>
+  <script src="js/register.controller.js"></script>
+
 
     
   </head>
@@ -36,49 +42,127 @@
              
     <ion-nav-view></ion-nav-view>
 
+    <script id="templates/form-errors.html" type="text/ng-template">
+        <div class="form-error" ng-message="required">This field is required.</div>
+        <div class="form-error" ng-message="minlength">This field is must be at least 5 characters.</div>
+        <div class="form-error" ng-message="maxlength">This field is must be less than 50 characters</div>
+    </script>
+
     <script id="templates/sign-in.html" type="text/ng-template">
-      <ion-view view-title="Sign-In">
+        <ion-view view-title="Sign-In">
+            <ion-content class="padding">
+                <form name="signinForm" novalidate ng-submit="signIn(user)">
+
+                    <div class="list">
+                        <label class="item item-input"
+                               ng-class="{ 'has-error' : signinForm.username.$invalid}">
+                            <span class="input-label">Username</span>
+                            <input type="text"
+                                   name="username"
+                                   ng-model="user.username"
+                                   ng-minlength="5"
+                                   ng-maxlength="10"
+                                   required>
+                        </label>
+
+                        <div class="form-errors" ng-messages="signinForm.username.$error" >
+                            <div class="form-error" ng-messages-include="templates/form-errors.html" ng-message="maxlength"></div>
+                        </div>
+                        <div class="form-errors" ng-messages="signinForm.username.$error" >
+                            <div class="form-error" ng-messages-include="templates/form-errors.html" ng-message="maxlength"></div>
+                        </div>
+
+                        <label class="item item-input"
+                               ng-class="{ 'has-error' : signinForm.password.$invalid}">
+                            <span class="input-label">Password</span>
+                            <input type="password"
+                                   name="password"
+                                   ng-model="user.password"
+                                   ng-minlength="5"
+                                   ng-maxlength="25"
+                                   required>
+                        </label>
+                        <div class="form-errors" ng-messages="signinForm.password.$error" >
+                            <div class="form-error" ng-messages-include="templates/form-errors.html" ng-message="maxlength"></div>
+                        </div>
+
+                        </div>
+                    </div>
+                    <span ng-if="loginError!=null" class="form-error"  >{{loginError}}</span>
+                    <div class="padding">
+                        <button class="button button-block button-positive" ng-disabled="signinForm.$invalid">
+                            Sign-In
+                        </button>
+                        <p class="text-center">
+                            <a href="#/forgot-password">Forgot password</a>
+                        </p>
+                    </div>
+
+                </form>
+            </ion-content>
+        </ion-view>
+    </script>
+    <script id="templates/register.html" type="text/ng-template">
+      <ion-view view-title="Register">
         <ion-content>
-          <div class="list">
-            <label class="item item-input">
-              <span class="input-label">Username</span>
-              <input type="text" ng-model="user.username">
+            <form name="registerForm" novalidate ng-submit="register(user)">
+
+            <div class="list">
+            <label class="item item-input"   ng-class="{ 'has-error' : registerForm.firstName.$invalid}">
+              <span class="input-label">First name</span>
+              <input type="text" name="firstName" ng-model="user.firstName" required>
             </label>
+                <div class="form-errors" ng-messages="registerForm.firstName.$error" >
+                    <div class="form-error" ng-messages-include="templates/form-errors.html" ></div>
+                </div>
             <label class="item item-input">
+              <span class="input-label">Last name</span>
+              <input type="text" ng-model="user.lastName">
+            </label>
+            <label class="item item-input" ng-class="{ 'has-error' : registerForm.email.$invalid}">
+              <span class="input-label">Email</span>
+              <input name="email" type="text" ng-model="user.email" required>
+            </label>
+                <div class="form-errors" ng-messages="registerForm.email.$error"  >
+                    <div class="form-error" ng-messages-include="templates/form-errors.html" ></div>
+                </div>
+             <label class="item item-input" ng-class="{ 'has-error' : registerForm.phoneNumber.$invalid}">
+              <span class="input-label">Phone number</span>
+              <input type="text"  name ="phoneNumber" placeholder="712188862" ng-model="user.phoneNumber" ng-maxlength="9" ng-minlength="9" required>
+            </label>
+                <div class="form-errors" ng-messages="registerForm.phoneNumber.$error"  >
+                    <div class="form-error" ng-messages-include="templates/form-errors.html" ></div>
+                </div>
+              <label class="item item-input" ng-class="{ 'has-error' : registerForm.username.$invalid}>
+                  <span class="input-label">User Name</span>
+                  <input type="text" name="username" ng-model="user.username" required>
+              </label>
+                <div class="form-errors" ng-messages="registerForm.username.$error"  >
+                    <div class="form-error" ng-messages-include="templates/form-errors.html" ></div>
+                </div>
+            <label class="item item-input" ng-class="{ 'has-error' : registerForm.password.$invalid}">
               <span class="input-label">Password</span>
-              <input type="password" ng-model="user.password">
+              <input type="password"  name="password" ng-model="user.password" required>
             </label>
+                <div class="form-errors" ng-messages="registerForm.password.$error"  >
+                    <div class="form-error" ng-messages-include="templates/form-errors.html" ></div>
+                </div>
           </div>
           <div class="padding">
-            <button class="button button-block button-positive" ng-click="signIn(user)">
-              Sign-In
+            <button class="button button-block button-positive" ng-disabled="registerForm.$invalid">
+              Register
             </button>
             <p class="text-center">
               <a href="#/forgot-password">Forgot password</a>
             </p>
           </div>
+                </form>
         </ion-content>
       </ion-view>
     </script>
 
-    <script id="templates/forgot-password.html" type="text/ng-template">
-      <ion-view view-title="Forgot Password">
-        <ion-content padding="true">
-          <p>
-            Yeah this is just a demo showing how views can be shown without tabs, then you can navigate
-            to views within tabs. Additionally, only one set of tabs needs to be written for all of the different views that should go inside the tabs. (Compared to written the same tab links in the footer of every view that's in a tab.)
-          </p>
-          <p>
-            There's no username/password, just click
-            the Sign-In button back a the sign-in view.
-          </p>
-          <p>
-            Return to <a href="#/sign-in">Sign-In</a>.
-          </p>
-        </ion-content>
-      </ion-view>
-    </script>
-    
+
+
     <script id="templates/tabs.html" type="text/ng-template">
       <ion-view>
         <ion-tabs class="tabs-icon-top tabs-positive">
@@ -102,13 +186,24 @@
  <ion-view view-title="Purchase info list">
 
         <ion-content>
+            <div class="row" >
+                <div class="col">Item</div>
 
-        <div class="row" ng-repeat="item in itemList">
+                <div class="col">Cost</div>
+                <div class="col">Billed by</div>
+            </div>
+  <div class="row" ng-repeat="item in itemList">
   <div class="col">{{item.text}}</div>
-  <div class="col">{{item.amount}}</div>
+  <div class="col ">{{item.amount}}</div>
   <div class="col">{{item.date}}</div>
   
 </div>
+            <div class="row" >
+                <div class="col bold-text">Total expenses</div>
+                <div class="col bold-text">{{totalSum}}</div>
+                <div class="col"></div>
+
+            </div>
              
           
         </ion-content>
@@ -117,69 +212,43 @@
 
  <script id="templates/home.html" type="text/ng-template">
  <ion-view view-title="Purchase info">
-        <ion-content>
-          <div class="list">
-            <label class="item item-input">
-              <span class="input-label">Description</span>
-              <input type="text" ng-model="formData.text" required>
+     <form name="purchaseForm" novalidate ng-submit="createPurchaseItem()">
 
-            </label>
+     <ion-content>
+          <div class="list">
+
             <label class="item item-input">
               <span class="input-label">Amount</span>
-              <input type="text" ng-model="formData.amount">
+              <input type="number" name="amount" step="0.01" ng-model="formData.amount" required>
+
             </label>
-      <label class="item item-input">
+              <div class="form-errors" ng-messages="purchaseForm.amount.$error"  >
+                  <span class="form-error" ng-messages-include="templates/form-errors.html" ng-message="required"></span>
+              </div>
+           <label class="item item-input">
               <span class="input-label">Date</span>
-              <input type="date" ng-model="formData.date">
+              <input type="date" name="date" ng-model="formData.date" required>
             </label>
+              <div class="form-errors" ng-messages="purchaseForm.date.$error"  >
+                  <div class="form-error" ng-messages-include="templates/form-errors.html" ng-message="required"></div>
+              </div>
+              <label class="item item-input">
+                  <span class="input-label">Description</span>
+                  <input type="text" ng-model="formData.text" >
+
+              </label>
           </div>
           <div class="padding">
-            <button class="button button-block button-positive" ng-click="createPurchaseItem()">
+            <button type="submit" class="button button-block button-positive" ng-disabled="purchaseForm.$invalid" >
               Save
             </button>
             <p class="text-center">
               <a href="#/forgot-password">Forgot password</a>
             </p>
           </div>
+         </form>
         </ion-content>
       </ion-view>    </script>
-
-
-
-
-    <script id="templates/facts.html" type="text/ng-template">
-      <ion-view view-title="Facts">
-        <ion-content padding="true">
-          <p>Banging your head against a wall uses 150 calories an hour.</p>
-          <p>Dogs have four toes on their hind feet, and five on their front feet.</p>
-          <p>The ant can lift 50 times its own weight, can pull 30 times its own weight and always falls over on its right side when intoxicated.</p>
-          <p>A cockroach will live nine days without it's head, before it starves to death.</p>
-          <p>Polar bears are left handed.</p>
-          <p>
-            <a class="button icon ion-home" href="#/tab/home"> Home</a>
-            <a class="button icon icon-right ion-chevron-right" href="#/tab/facts2">More Facts</a>
-          </p>
-        </ion-content>
-      </ion-view>
-    </script> 
-
-    <script id="templates/facts2.html" type="text/ng-template">
-      <ion-view view-title="Also Factual">
-        <ion-content padding="true">
-          <p>111,111,111 x 111,111,111 = 12,345,678,987,654,321</p>
-          <p>1 in every 4 Americans has appeared on T.V.</p>
-          <p>11% of the world is left-handed.</p>
-          <p>1 in 8 Americans has worked at a McDonalds restaurant.</p>
-          <p>$283,200 is the absolute highest amount of money you can win on Jeopardy.</p>
-          <p>101 Dalmatians, Peter Pan, Lady and the Tramp, and Mulan are the only Disney cartoons where both parents are present and don't die throughout the movie.</p>
-          <p>
-            <a class="button icon ion-home" href="#/tab/home"> Home</a>
-            <a class="button icon ion-chevron-left" href="#/tab/facts"> Scientific Facts</a>
-          </p>
-        </ion-content>
-      </ion-view>
-    </script>
-
     <script id="templates/about.html" type="text/ng-template">
       <ion-view view-title="About">
         <ion-content padding="true">
