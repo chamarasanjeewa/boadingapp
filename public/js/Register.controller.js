@@ -1,3 +1,5 @@
+(function () {
+    'use strict';
 angular.module('boadingBudgetApp').controller('RegisterCtrl',RegisterCtrl);
 RegisterCtrl.$inject = ['$scope','$state','PurchaseService'];
 
@@ -16,3 +18,4 @@ function RegisterCtrl($scope, $state,PurchaseService) {
   };
   
 };
+})();

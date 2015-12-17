@@ -1,4 +1,5 @@
-
+(function () {
+    'use strict';
 angular.module('boadingBudgetApp').factory('PurchaseService',PurchaseService);
 PurchaseService.$inject = ['$http'];
 function PurchaseService($http) {
@@ -32,5 +33,6 @@ function PurchaseService($http) {
       }
     }
   }
+})();
 
 

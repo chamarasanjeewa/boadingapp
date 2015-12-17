@@ -1,3 +1,5 @@
+(function () {
+    'use strict';
 angular.module('boadingBudgetApp', ['ionic','ngMessages']);
 
  angular.module('boadingBudgetApp').config(['$stateProvider', '$urlRouterProvider',function ($stateProvider, $urlRouterProvider)
@@ -108,3 +110,4 @@ angular.module('boadingBudgetApp').directive('usernameAvailable', function($time
         }
     }
 });
+})();
