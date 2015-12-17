@@ -24,6 +24,20 @@ app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-M
 // routes ======================================================================
 require('./app/routes.js')(app);
 
+app.all('*', function(req, res, next) {
+    //Check for Authentication
+    console.log(req.session)
+    if ((!(/^\/auth/g.test(req.url))) && (!req.session)) {
+        console.log('in app.all: Unauthorized')
+        res.send(401)
+    }
+    else
+    {
+        return next()
+    }
+})
+
+
 
 
 // listen (start app with node server.js) ======================================

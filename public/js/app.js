@@ -1,6 +1,7 @@
 angular.module('boadingBudgetApp', ['ionic','ngMessages']);
 
- angular.module('boadingBudgetApp').config(['$stateProvider', '$urlRouterProvider',function ($stateProvider, $urlRouterProvider) {
+ angular.module('boadingBudgetApp').config(['$stateProvider', '$urlRouterProvider',function ($stateProvider, $urlRouterProvider)
+   {
 $stateProvider
     .state('signin', {
       url: '/sign-in',
@@ -82,4 +83,28 @@ $stateProvider
 
 
    $urlRouterProvider.otherwise('/register');
-}]);
+}
+
+
+
+
+
+ ]);
+
+angular.module('boadingBudgetApp').directive('usernameAvailable', function($timeout, $q,PurchaseService) {
+    return {
+        restrict: 'AE',
+        require: 'ngModel',
+        link: function(scope, elm, attr, model) {
+            model.$asyncValidators.usernameExists = function() {
+
+                return PurchaseService.IsUserNameAvailable(model.$viewValue).then(function(result){
+                    $timeout(function(){
+                        model.$setValidity('usernameExists', !!result.data);
+                    }, 1000);
+                });
+
+            };
+        }
+    }
+});

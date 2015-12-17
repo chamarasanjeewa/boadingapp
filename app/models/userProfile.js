@@ -9,7 +9,7 @@ var UserProfileSchema = new Schema({
     phoneNumber: String,
     createdDate : Date,
     updatedDate:Date,
-    userId:{type: Schema.Types.ObjectId, ref: 'user'}
+    user:{type: Schema.Types.ObjectId, ref: 'user'}
 });
 var UserProfile=mongoose.model('userprofile', UserProfileSchema);
 module.exports = UserProfile;

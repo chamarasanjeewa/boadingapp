@@ -15,13 +15,18 @@ function PurchaseService($http) {
         return $http.delete('/api/purchased/' + id);
       },
       signIn:function(signInData) {
-          debugger;
+
         return $http.post('/api/login', signInData);
 
       },
 
+        IsUserNameAvailable:function(userName) {
+            return $http.post('/api/userNameExists',{userName:userName});
+
+        },
+
        register:function(registerData) {
-           debugger;
+
         return $http.post('/api/register', registerData);
 
       }

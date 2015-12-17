@@ -60,17 +60,14 @@
                             <input type="text"
                                    name="username"
                                    ng-model="user.username"
-                                   ng-minlength="5"
-                                   ng-maxlength="10"
+                                   ng-minlength="6"
                                    required>
                         </label>
 
                         <div class="form-errors" ng-messages="signinForm.username.$error" >
-                            <div class="form-error" ng-messages-include="templates/form-errors.html" ng-message="maxlength"></div>
+                            <div class="form-error"  ng-message="minlength">Field must contain at least 6 characters</div>
                         </div>
-                        <div class="form-errors" ng-messages="signinForm.username.$error" >
-                            <div class="form-error" ng-messages-include="templates/form-errors.html" ng-message="maxlength"></div>
-                        </div>
+
 
                         <label class="item item-input"
                                ng-class="{ 'has-error' : signinForm.password.$invalid}">
@@ -94,7 +91,9 @@
                             Sign-In
                         </button>
                         <p class="text-center">
-                            <a href="#/forgot-password">Forgot password</a>
+                            <a href="#/register">Register</a>
+
+                            <!--<a href="#/forgot-password">Forgot password</a>-->
                         </p>
                     </div>
 
@@ -113,7 +112,7 @@
               <input type="text" name="firstName" ng-model="user.firstName" required>
             </label>
                 <div class="form-errors" ng-messages="registerForm.firstName.$error" >
-                    <div class="form-error" ng-messages-include="templates/form-errors.html" ></div>
+                    <span class="form-error" ng-messages-include="templates/form-errors.html" ></span>
                 </div>
             <label class="item item-input">
               <span class="input-label">Last name</span>
@@ -121,7 +120,7 @@
             </label>
             <label class="item item-input" ng-class="{ 'has-error' : registerForm.email.$invalid}">
               <span class="input-label">Email</span>
-              <input name="email" type="text" ng-model="user.email" required>
+              <input name="email" type="email" ng-model="user.email" required>
             </label>
                 <div class="form-errors" ng-messages="registerForm.email.$error"  >
                     <div class="form-error" ng-messages-include="templates/form-errors.html" ></div>
@@ -131,14 +130,23 @@
               <input type="text"  name ="phoneNumber" placeholder="712188862" ng-model="user.phoneNumber" ng-maxlength="9" ng-minlength="9" required>
             </label>
                 <div class="form-errors" ng-messages="registerForm.phoneNumber.$error"  >
-                    <div class="form-error" ng-messages-include="templates/form-errors.html" ></div>
+                    <span class="form-error" ng-messages-include="templates/form-errors.html" ></span>
                 </div>
-              <label class="item item-input" ng-class="{ 'has-error' : registerForm.username.$invalid}>
+              <label class="item item-input" ng-class="{ 'has-error' : registerForm.username.$invalid}">
                   <span class="input-label">User Name</span>
-                  <input type="text" name="username" ng-model="user.username" required>
+                  <input type="text" name="username"  ng-model="user.username" username-available ng-minlength="6" required>
+
               </label>
+                <div ng-if="registerForm.$pending.usernameExists">checking....</div>
+                <div ng-if="registerForm.$error.usernameExists" class="form-error">username exists already</div>
                 <div class="form-errors" ng-messages="registerForm.username.$error"  >
-                    <div class="form-error" ng-messages-include="templates/form-errors.html" ></div>
+                    <div class="form-errors" ng-messages="signinForm.username.$error" >
+                        <div class="form-error"  ng-message="minlength">Field must contain at least 6 characters</div>
+                    </div>
+                    <div class="form-errors" ng-messages="signinForm.username.$error" >
+                        <div class="form-error"  ng-message="required">Required</div>
+                    </div>
+
                 </div>
             <label class="item item-input" ng-class="{ 'has-error' : registerForm.password.$invalid}">
               <span class="input-label">Password</span>
@@ -153,16 +161,13 @@
               Register
             </button>
             <p class="text-center">
-              <a href="#/forgot-password">Forgot password</a>
+              <!--<a href="#/forgot-password">Forgot password</a>-->
             </p>
           </div>
                 </form>
         </ion-content>
       </ion-view>
     </script>
-
-
-
     <script id="templates/tabs.html" type="text/ng-template">
       <ion-view>
         <ion-tabs class="tabs-icon-top tabs-positive">
@@ -187,15 +192,14 @@
 
         <ion-content>
             <div class="row" >
-                <div class="col">Item</div>
-
-                <div class="col">Cost</div>
-                <div class="col">Billed by</div>
+                <div class="col bold-text">Item</div>
+                <div class="col bold-text">Cost</div>
+                <div class="col bold-text">Billed by</div>
             </div>
   <div class="row" ng-repeat="item in itemList">
   <div class="col">{{item.text}}</div>
   <div class="col ">{{item.amount}}</div>
-  <div class="col">{{item.date}}</div>
+  <div class="col">{{item.userProfileId.firstName}}</div>
   
 </div>
             <div class="row" >
@@ -243,7 +247,7 @@
               Save
             </button>
             <p class="text-center">
-              <a href="#/forgot-password">Forgot password</a>
+              <!--<a href="#/forgot-password">Forgot password</a>-->
             </p>
           </div>
          </form>

@@ -7,51 +7,21 @@ var logincontroller=require('./controllers/account.js');
 
 
 function getPurchased(res){
-    purchasedGood.find(function(err, purchased) {
 
-			// if there is an error retrieving, send the error. nothing after res.send(err) will execute
-			if (err)
-				res.send(err)
+    purchasedGood.find({})
+        .populate('userProfileId')
+        .exec(function(error, purchasedItemList) {
+            res.json(purchasedItemList);
+            console.log(JSON.stringify(purchasedItemList, null, "\t"))
+        })
 
-			res.json(purchased); // return all todos in JSON format
-		});
 };
 
 function signInUser(req,res){
-var signInUser=req.body;
-    console.log(signInUser.username);
-
-    UserModel.findOne({ userName: signInUser.username }, function(err, selectedUser) {
-        if (err) {
-
-            throw err
-        };
-
-        if(selectedUser!=null && selectedUser.passwordHash==signInUser.password){
-            req.session.regenerate(function(){
-
-
-                req.session.user = selectedUser;
-
-            });
-        console.log(req.session)
-            console.log(req.session.user)
-
-            res.json(signInUser);
-
-}else{
-
-    var passwordMissMatchError = new Error('user name or password does not match') ;
-    console.log('passwordMissMatchError')
-    //throw passwordMissMatchError
-    res.status(401);
-    res.json(passwordMissMatchError);
-}
-
-    });
 
 }
 function registerUser(user,res){
+    console.log('username------'+user.username)
 
 var newUser=new UserModel({
     email: user.email,
@@ -79,7 +49,7 @@ newUser.save(function(err) {
             firstName: user.firstName,// todo hash it
             lastName: user.lastName,
             phoneNumber:user.phoneNumber,
-            userId:userId
+            user:userId
         });
 
         newUserProfile.save(function(err) {
@@ -94,7 +64,7 @@ newUser.save(function(err) {
 
 
     }
-      
+
 }
 
 var sendNotificationMessage=function(){
@@ -115,23 +85,84 @@ module.exports = function(app) {
 	// get all todos
 
 	app.post('/api/login', function(req, res) {
-		console.log('serverside login')
-        signInUser(req,res);
+        console.log('serverside login')
+        var signInUser=req.body;
 
-	});
+        UserModel.findOne({ userName: signInUser.username })
+            .exec(function(err, selectedUser) {
+                if (err) {
+
+                    throw err
+                };
+                if(selectedUser!=null && selectedUser.passwordHash==signInUser.password){
+                    console.log('selected user'+selectedUser._id)
+                    UserProfileModel.findOne({user:selectedUser._id}).exec(function(error, selectedUserProfile) {
+                        if (err) {
+                            console.log('error retrieving user profile')
+
+                            // throw err
+                        };
+                        console.log(signInUser.username);
+                        req.session.username=signInUser.username;
+                        req.session.firstName=selectedUserProfile.firstName;
+                        console.log('selected userprofile'+selectedUserProfile)
+                        req.session.userProfileId=selectedUserProfile._id;
+                        console.log(  req.session.userProfileId);
+                        console.log( req.session.firstName);
+
+                        return res.json(signInUser);
+
+                    })
+                }
+                else{
+
+                    var passwordMissMatchError = new Error('user name or password does not match') ;
+                    console.log('passwordMissMatchError')
+                    //throw passwordMissMatchError
+                    res.status(401);
+                    return res.json(passwordMissMatchError);
+                }
+            })
+
+    });
 
 	app.post('/api/register', function(req, res) {
-		console.log('serverside login')
-        registerUser(req.body,res)	;	
+
+		console.log('USER'+req.body.username)
+        registerUser(req.body,res)	;
 	});
 
-
-
 	app.get('/api/purchased', function(req, res) {
-
+        console.log('loginUserProfileId'+  req.session.userProfileId);
+        console.log('login user first name'+ req.session.firstName);
 		// use mongoose to get all todos in the database
 		getPurchased(res);
 	});
+
+    app.post('/api/userNameExists', function(req, res) {
+
+       var userName =req.body.userName;
+        UserModel.findOne({userName: userName})
+            .exec(function (err, selectedUser) {
+                if (err) {
+                    console.log('error finding username')
+                    throw err
+                }
+                ;
+                if (selectedUser == null) {
+                    console.log('user exists-------'+true)
+
+                    return res.json(true);
+                } else {
+                    console.log('user exists-------'+false)
+
+                    return res.json(false);
+
+                }
+
+            });
+
+    });
 
 	// create todo and send back all todos after creation
 
@@ -140,8 +171,9 @@ module.exports = function(app) {
         purchasedGood.create({
 			text : req.body.text,
 			amount: req.body.amount,
-			purchasedDate:req.body.date
-			
+			purchasedDate:req.body.date,
+            userProfileId:req.session.userProfileId
+
 		}, function(err, purchased) {
 			if (err)
 				res.send(err);
