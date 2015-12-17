@@ -1,13 +1,15 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-var purchasedGood = mongoose.model('purchasedgood', {
+var PurchasedGoodSchema=new Schema({
     text : {type : String, default: ''},
     amount: Number,// 	userId:{type : String, default: ''},
     createdDate    : Date,
     modifiedDate :Date,
-    userId:Number,
+    userProfileId:{type: Schema.Types.ObjectId, ref: 'userprofile'},
     purchasedDate:Date//,
-  //  userId:{type: Schema.Types.ObjectId, ref: 'user'}
 
-});
- module.exports=purchasedGood;
+})
+
+var UserProfile=mongoose.model('purchasedgood', PurchasedGoodSchema);
+module.exports = UserProfile;
