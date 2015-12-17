@@ -4,7 +4,6 @@ angular.module('boadingBudgetApp').controller('purchasedListController',purchase
 purchasedListController.$inject = ['$scope','$state','PurchaseService'];
 
 function purchasedListController($scope,$state,PurchaseService) {
-  
     $scope.loading = true;
 $scope.totalSum=0;
     // GET =====================================================================
