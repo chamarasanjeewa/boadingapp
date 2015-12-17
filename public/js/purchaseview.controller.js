@@ -40,3 +40,4 @@ function HomeTabCtrl($scope,$state,PurchaseService) {
 		};
 	};
 })();
+

@@ -111,3 +111,5 @@ angular.module('boadingBudgetApp').directive('usernameAvailable', function($time
     }
 });
 })();
+
+
