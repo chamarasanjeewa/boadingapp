@@ -2,6 +2,7 @@ var purchasedGood = require('./models/todo');
 var UserModel = require('./models/user.js');
 var UserProfileModel = require('./models/userProfile.js');
 var nodemailer = require('nodemailer');
+var passwordHash = require('password-hash');
 
 var requestify = require('requestify');
 var logincontroller=require('./controllers/account.js');
@@ -60,10 +61,15 @@ function registerUser(user,res){
         console.log('Message sent: ' + info.response);
 
     });
+      console.log('password before hashing'+user.password);
+
+    var hashedPassword = passwordHash.generate( user.password);
+    console.log('hashed password'+hashedPassword);
+
 var newUser=new UserModel({
     email: user.email,
     userName:user.username,
-    passwordHash: user.password,// todo hash it
+    passwordHash: hashedPassword,
     passwordSalt: 'dd'});
 
 newUser.save(function(err) {
@@ -131,25 +137,31 @@ module.exports = function(app) {
 
                     throw err
                 };
-                if(selectedUser!=null && selectedUser.passwordHash==signInUser.password){
-                    console.log('selected user'+selectedUser._id)
-                    UserProfileModel.findOne({user:selectedUser._id}).exec(function(error, selectedUserProfile) {
-                        if (err) {
-                            console.log('error retrieving user profile')
+             
+                if(selectedUser!=null){
+console.log('signedd in user user password'+signInUser.password)
+                  //var signedInuserHashedPassword= passwordHash.generate(signInUser.password);
+                  var isVerified=passwordHash.verify(signInUser.password, selectedUser.passwordHash); // true
+                  
+                    if(isVerified){
+                        UserProfileModel.findOne({user:selectedUser._id}).exec(function(error, selectedUserProfile) {
+                            if (err) {
+                                console.log('error retrieving user profile')
 
-                            // throw err
-                        };
-                        console.log(signInUser.username);
-                        req.session.username=signInUser.username;
-                        req.session.firstName=selectedUserProfile.firstName;
-                        console.log('selected userprofile'+selectedUserProfile)
-                        req.session.userProfileId=selectedUserProfile._id;
-                        console.log(  req.session.userProfileId);
-                        console.log( req.session.firstName);
+                                // throw err
+                            };
+                            console.log(signInUser.username);
+                            req.session.username=signInUser.username;
+                            req.session.firstName=selectedUserProfile.firstName;
+                            console.log('selected userprofile'+selectedUserProfile)
+                            req.session.userProfileId=selectedUserProfile._id;
+                            console.log(  req.session.userProfileId);
+                            console.log( req.session.firstName);
 
-                        return res.json(signInUser);
+                            return res.json(signInUser);
 
-                    })
+                        })
+
                 }
                 else{
 
@@ -159,6 +171,7 @@ module.exports = function(app) {
                     res.status(401);
                     return res.json(passwordMissMatchError);
                 }
+            }
             })
 
     });
