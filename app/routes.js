@@ -1,6 +1,7 @@
 var purchasedGood = require('./models/todo');
 var UserModel = require('./models/user.js');
 var UserProfileModel = require('./models/userProfile.js');
+var nodemailer = require('nodemailer');
 
 var requestify = require('requestify');
 var logincontroller=require('./controllers/account.js');
@@ -20,9 +21,45 @@ function getPurchased(res){
 function signInUser(req,res){
 
 }
+
+
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'budgetmanagerapp@gmail.com',
+            pass: 'budgetmanager1234'
+        }
+    }, {
+        // default values for sendMail method
+        from: 'chamara.sanjeewa@gmail.com',
+        headers: {
+            'My-Awesome-Header': '123'
+        }
+    });
+    transporter.sendMail({
+        to: 'chamara.sanjeewa@gmail.com',
+        subject: 'hello',
+        text: 'budgetmanager message'
+    });
+
+var mailOptions = {
+    from: 'Budget manager ✔ <budgetmanagerapp@gmail.com.com>', // sender address
+    to: 'chamara.sanjeewa@gmail.com', // list of receivers
+    subject: 'Hello ✔', // Subject line
+    text: 'Hello world ✔', // plaintext body
+    html: '<b>Hello world ✔</b>' // html body
+};
+
+
 function registerUser(user,res){
     console.log('username------'+user.username)
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            return console.log(error);
+        }
+        console.log('Message sent: ' + info.response);
 
+    });
 var newUser=new UserModel({
     email: user.email,
     userName:user.username,

@@ -11,6 +11,29 @@ var methodOverride = require('method-override');
 
 // configuration ===============================================================
 mongoose.connect(database.url); 	// connect to mongoDB database on modulus.io
+// CONNECTION EVENTS
+// When successfully connected
+mongoose.connection.on('connected', function () {
+    console.log('Mongoose default connection open to ' + dbURI);
+});
+
+// If the connection throws an error
+mongoose.connection.on('error',function (err) {
+    console.log('Mongoose default connection error: ' + err);
+});
+
+// When the connection is disconnected
+mongoose.connection.on('disconnected', function () {
+    console.log('Mongoose default connection disconnected');
+});
+
+// If the Node process ends, close the Mongoose connection
+process.on('SIGINT', function() {
+    mongoose.connection.close(function () {
+        console.log('Mongoose default connection disconnected through app termination');
+        process.exit(0);
+    });
+});
 
 app.use(session({secret: 'bmannAppSecret'}));
 app.use(express.static(__dirname + '/public')); 		// set the static files location /public/img will be /img for users
