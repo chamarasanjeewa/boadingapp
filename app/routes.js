@@ -46,9 +46,9 @@ function signInUser(req,res){
 var mailOptions = {
     from: 'Budget manager ✔ <budgetmanagerapp@gmail.com.com>', // sender address
     to: 'chamara.sanjeewa@gmail.com', // list of receivers
-    subject: 'Hello ✔', // Subject line
-    text: 'Hello world ✔', // plaintext body
-    html: '<b>Hello world ✔</b>' // html body
+    subject: 'Hello', // Subject line
+    text: 'Hello world', // plaintext body
+    html: '<b>Hello world</b>' // html body
 };
 
 
