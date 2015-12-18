@@ -1,7 +1,7 @@
 var purchasedGood = require('./models/todo');
 var UserModel = require('./models/user.js');
 var UserProfileModel = require('./models/userProfile.js');
-var nodemailer = require('nodemailer');
+//var nodemailer = require('nodemailer');
 var passwordHash = require('password-hash');
 
 var requestify = require('requestify');
@@ -23,7 +23,7 @@ function signInUser(req,res){
 
 }
 
-
+/*
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -49,18 +49,18 @@ var mailOptions = {
     subject: 'Hello', // Subject line
     text: 'Hello world', // plaintext body
     html: '<b>Hello world</b>' // html body
-};
+};*/
 
 
 function registerUser(user,res){
     console.log('username------'+user.username)
-    transporter.sendMail(mailOptions, function(error, info){
-        if(error){
-            return console.log(error);
-        }
-        console.log('Message sent: ' + info.response);
+    //transporter.sendMail(mailOptions, function(error, info){
+      //  if(error){
+         //   return console.log(error);
+        //}
+        //console.log('Message sent: ' + info.response);
 
-    });
+    //});
       console.log('password before hashing'+user.password);
 
     var hashedPassword = passwordHash.generate( user.password);
