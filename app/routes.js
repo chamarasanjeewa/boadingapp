@@ -1,7 +1,7 @@
 var purchasedGood = require('./models/todo');
 var UserModel = require('./models/user.js');
 var UserProfileModel = require('./models/userProfile.js');
-//var nodemailer = require('nodemailer');
+var nodemailer = require('nodemailer');
 var passwordHash = require('password-hash');
 
 var requestify = require('requestify');
@@ -112,8 +112,7 @@ newUser.save(function(err) {
              return res;
             }
             var subject="Welcome to B-Man"
-var message="<p> B-man is your budget management solution.</p><p> With comprehensive features to automatically calculate
-monthly budget, to take reports, to view as graphs and charts</p>";
+var message="<p> B-man is your budget management solution.</p><p> With comprehensive features to automatically calculate monthly budget, to take reports, to view as graphs and charts</p>";
             sendMail(newUserProfile.email,message)
             res.json(user);
 
