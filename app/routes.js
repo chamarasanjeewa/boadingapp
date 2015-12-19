@@ -23,7 +23,7 @@ function signInUser(req,res){
 
 }
 
-/*
+
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -44,23 +44,34 @@ function signInUser(req,res){
     });
 
 var mailOptions = {
-    from: 'Budget manager ✔ <budgetmanagerapp@gmail.com.com>', // sender address
+    from: 'Budget manager <budgetmanagerapp@gmail.com.com>', // sender address
     to: 'chamara.sanjeewa@gmail.com', // list of receivers
     subject: 'Hello', // Subject line
     text: 'Hello world', // plaintext body
     html: '<b>Hello world</b>' // html body
-};*/
+};
 
+var sendMail=function(to,subject,message){
+var mailOptions = {
+    from: 'Budget manager <budgetmanagerapp@gmail.com.com>', // sender address
+    to: to, // list of receivers
+    subject: subject, // Subject line
+    text: message, // plaintext body
+    html: '<b>'+message+'</b>' // html body
+};
+
+transporter.sendMail(mailOptions, function(error, info){
+       if(error){
+           return console.log(error);
+        }
+        console.log('Message sent: ' + info.response);
+   });
+
+}
 
 function registerUser(user,res){
     console.log('username------'+user.username)
-    //transporter.sendMail(mailOptions, function(error, info){
-      //  if(error){
-         //   return console.log(error);
-        //}
-        //console.log('Message sent: ' + info.response);
-
-    //});
+    
       console.log('password before hashing'+user.password);
 
     var hashedPassword = passwordHash.generate( user.password);
@@ -100,6 +111,10 @@ newUser.save(function(err) {
              res.send(err);
              return res;
             }
+            var subject="Welcome to B-Man"
+var message="<p> B-man is your budget management solution.</p><p> With comprehensive features to automatically calculate
+monthly budget, to take reports, to view as graphs and charts</p>";
+            sendMail(newUserProfile.email,message)
             res.json(user);
 
             console.log('User profile created!');

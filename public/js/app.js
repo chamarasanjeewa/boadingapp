@@ -6,7 +6,7 @@ angular.module('boadingBudgetApp', ['ionic','ngMessages']);
    {
 $stateProvider
     .state('signin', {
-      url: '/sign-in',
+      url: '/signin',
       templateUrl: 'templates/sign-in.html',
       controller: 'SignInCtrl'
     })
@@ -84,7 +84,7 @@ $stateProvider
     });
 
 
-   $urlRouterProvider.otherwise('/register');
+   $urlRouterProvider.otherwise('/signin');
 }
 
 

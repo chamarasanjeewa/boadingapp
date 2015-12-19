@@ -3,7 +3,7 @@
 <html >
   <head>
     <meta charset="UTF-8">
-    <title>Sign-in, then Tabs: Nightly</title>
+    <title>B-man</title>
     <style  ></style>
     
   </head>
@@ -15,7 +15,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
     
-    <title>Sign-in, Then Tabs Example</title>
+    <title>B-man</title>
 
     <link href="lib/ionic/css/ionic.css" rel="stylesheet">
       <link href="css/style.css" rel="stylesheet">
@@ -44,8 +44,8 @@
 
     <script id="templates/form-errors.html" type="text/ng-template">
         <div class="form-error" ng-message="required">This field is required.</div>
-        <div class="form-error" ng-message="minlength">This field is must be at least 5 characters.</div>
-        <div class="form-error" ng-message="maxlength">This field is must be less than 50 characters</div>
+        <div class="form-error" ng-message="minlength">This field must be 9 characters.</div>
+        <div class="form-error" ng-message="maxlength">This field must be 9 characters</div>
     </script>
 
     <script id="templates/sign-in.html" type="text/ng-template">
@@ -88,7 +88,7 @@
                     <span ng-if="loginError!=null" class="form-error"  >{{loginError}}</span>
                     <div class="padding">
                         <button class="button button-block button-positive" ng-disabled="signinForm.$invalid">
-                            Sign-In
+                            Sign In
                         </button>
                         <p class="text-center">
                             <a href="#/register">Register</a>
@@ -130,8 +130,10 @@
               <input type="text"  name ="phoneNumber" placeholder="712188862" ng-model="user.phoneNumber" ng-maxlength="9" ng-minlength="9" required>
             </label>
                 <div class="form-errors" ng-messages="registerForm.phoneNumber.$error"  >
-                    <span class="form-error" ng-messages-include="templates/form-errors.html" ></span>
-                </div>
+                 <div class="form-error" ng-message="minlength">This field is must be at least 9 characters.</div>
+                   <div class="form-error" ng-message="maxlength">This field is must be at least 9 characters.</div>
+      
+             </div>
               <label class="item item-input" ng-class="{ 'has-error' : registerForm.username.$invalid}">
                   <span class="input-label">User Name</span>
                   <input type="text" name="username"  ng-model="user.username" username-available ng-minlength="6" required>
@@ -156,6 +158,7 @@
                     <div class="form-error" ng-messages-include="templates/form-errors.html" ></div>
                 </div>
           </div>
+          <ion-spinner icon="spiral"></ion-spinner>
           <div class="padding">
             <button class="button button-block button-positive" ng-disabled="registerForm.$invalid">
               Register
@@ -187,7 +190,7 @@
       </ion-view>
     </script>
 
-    <script id="templates/purchasedList.html" type="text/ng-template">
+    <script id="templates/purchasedList.html" ng-init="getPurchased()" type="text/ng-template">
  <ion-view view-title="Purchase info list">
 
         <ion-content>
@@ -208,7 +211,11 @@
                 <div class="col"></div>
 
             </div>
-             
+             <p class="text-center">
+                            <a href="#/home">Home</a>
+
+                            <!--<a href="#/forgot-password">Forgot password</a>-->
+                        </p>
           
         </ion-content>
       </ion-view>    
@@ -247,7 +254,7 @@
               Save
             </button>
             <p class="text-center">
-              <!--<a href="#/forgot-password">Forgot password</a>-->
+              <a href="#/tab/list">Purchased list</a>
             </p>
           </div>
          </form>
@@ -256,11 +263,11 @@
     <script id="templates/about.html" type="text/ng-template">
       <ion-view view-title="About">
         <ion-content padding="true">
-          <h3>Create hybrid mobile apps with the web technologies you love.</h3>
-          <p>Free and open source, Ionic offers a library of mobile-optimized HTML, CSS and JS components for building highly interactive apps.</p>
-          <p>Built with Sass and optimized for AngularJS.</p>
+          <h3>B-man is to manage budget</h3>
+          <p>Provides comprehensive features such as summary with graphs and charts, messages and emails.</p>
+          <p></p>
           <p>
-            <a class="button icon icon-right ion-chevron-right" href="#/tab/navstack">Tabs Nav Stack</a>
+            <a class="button icon icon-right ion-chevron-right" href="#/tab/home">Home</a>
           </p>
         </ion-content>
       </ion-view>

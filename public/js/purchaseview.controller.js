@@ -54,7 +54,7 @@ function SignInCtrl($scope, $state,PurchaseService) {
 			.success(function(data) {
 				 $state.go('tabs.home');
 			}).error(function(data) {
-            $scope.loginError="User name or password invalid";
+            $scope.loginError="User name or password invalid or not connected to internet";
 				console.log('unauthorized ')
 			});
 
