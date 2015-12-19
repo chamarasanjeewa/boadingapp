@@ -47,31 +47,21 @@ app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-M
 // routes ======================================================================
 require('./app/routes.js')(app);
 
+
 app.all('*', function(req, res, next) {
-    //Check for Authentication
+       res.header("Access-Control-Allow-Origin", "*");
+       res.header("Access-Control-Allow-Headers", "X-Requested-With");
+       res.header('Access-Control-Allow-Headers', 'Content-Type');
+    
     console.log(req.session)
     if ((!(/^\/auth/g.test(req.url))) && (!req.session)) {
-        console.log('in app.all: Unauthorized')
+        console.log('in app.all------------------: Unauthorized')
         res.send(401)
     }
     else
     {
         return next()
     }
-})
-
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
-
-app.get('/', function(req, res, next) {
-  // Handle the get for this route
-});
-
-app.post('/', function(req, res, next) {
- // Handle the post for this route
 });
 
 
