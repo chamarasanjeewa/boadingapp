@@ -5,6 +5,7 @@ var nodemailer = require('nodemailer');
 var passwordHash = require('password-hash');
 
 var requestify = require('requestify');
+var dateFormat = require('dateformat');
 var logincontroller=require('./controllers/account.js');
 
 
@@ -14,7 +15,7 @@ function getPurchased(res){
         .populate('userProfileId')
         .exec(function(error, purchasedItemList) {
             res.json(purchasedItemList);
-            console.log(JSON.stringify(purchasedItemList, null, "\t"))
+   
         })
 
 };
@@ -30,30 +31,12 @@ function signInUser(req,res){
             user: 'budgetmanagerapp@gmail.com',
             pass: 'budgetmanager1234'
         }
-    }, {
-        // default values for sendMail method
-        from: 'chamara.sanjeewa@gmail.com',
-        headers: {
-            'My-Awesome-Header': '123'
-        }
+   
     });
-    transporter.sendMail({
-        to: 'chamara.sanjeewa@gmail.com',
-        subject: 'hello',
-        text: 'budgetmanager message'
-    });
-
-var mailOptions = {
-    from: 'Budget manager <budgetmanagerapp@gmail.com.com>', // sender address
-    to: 'chamara.sanjeewa@gmail.com', // list of receivers
-    subject: 'Hello', // Subject line
-    text: 'Hello world', // plaintext body
-    html: '<b>Hello world</b>' // html body
-};
-
+   
 var sendMail=function(to,subject,message){
 var mailOptions = {
-    from: 'Budget manager <budgetmanagerapp@gmail.com.com>', // sender address
+    from: 'Budget manager <budgetmanagerapp@gmail.com>', // sender address
     to: to, // list of receivers
     subject: subject, // Subject line
     text: message, // plaintext body
@@ -63,8 +46,10 @@ var mailOptions = {
 transporter.sendMail(mailOptions, function(error, info){
        if(error){
            return console.log(error);
+        console.log('Message sent error---------------------: ' + info.response);
+
         }
-        console.log('Message sent: ' + info.response);
+        console.log('Message sent---------------------------: ' + info.response);
    });
 
 }
@@ -112,22 +97,21 @@ newUser.save(function(err) {
              return res;
             }
             var subject="Welcome to B-Man"
-var message="<p> B-man is your budget management solution.</p><p> With comprehensive features to automatically calculate monthly budget, to take reports, to view as graphs and charts</p>";
-            sendMail(newUserProfile.email,message)
+var message="<p> B-man is our boading's budget management solution.</p><p>Your continious collaboration is mandatory to manage boading budget successfully!</p><p> Thank you</p>";
+            sendMail(newUserProfile.email,subject,message)
             res.json(user);
 
             console.log('User profile created!');
         });
-
-
     }
 
 }
 
-var sendNotificationMessage=function(){
+var sendNotificationMessage=function(phoneNumber,message){
 
 	console.log('purchse')
-	requestify.get('http://smsc.vianett.no/V3/CPA/MT/MT.ashx?username=ktvgroup&password=sms7524&tel=+94712188862&msg=testbudgetmanager&msgid=1&SenderAddress=chamara&SenderAddressType=5')
+    //94712188862
+	requestify.get('http://smsc.vianett.no/V3/CPA/MT/MT.ashx?username=ktvgroup&password=sms7524&tel='+phoneNumber+'&msg='+message+'&msgid=1&SenderAddress=chamara&SenderAddressType=5')
   	.then(function(response) {
       // Get the response body (JSON parsed or jQuery object for XMLs)
      var response= response.getBody();
@@ -169,9 +153,9 @@ console.log('signedd in user user password'+signInUser.password)
                             req.session.firstName=selectedUserProfile.firstName;
                             console.log('selected userprofile'+selectedUserProfile)
                             req.session.userProfileId=selectedUserProfile._id;
+                            req.session.email=selectedUserProfile.email;
                             console.log(  req.session.userProfileId);
                             console.log( req.session.firstName);
-
                             return res.json(signInUser);
 
                         })
@@ -197,15 +181,12 @@ console.log('signedd in user user password'+signInUser.password)
 	});
 
 	app.get('/api/purchased', function(req, res) {
-        console.log('loginUserProfileId'+  req.session.userProfileId);
-        console.log('login user first name'+ req.session.firstName);
-		// use mongoose to get all todos in the database
+       	// use mongoose to get all purchased items in the database
 		getPurchased(res);
 	});
 
     app.post('/api/userNameExists', function(req, res) {
-
-       var userName =req.body.userName;
+        var userName =req.body.userName;
         UserModel.findOne({userName: userName})
             .exec(function (err, selectedUser) {
                 if (err) {
@@ -241,8 +222,11 @@ console.log('signedd in user user password'+signInUser.password)
 		}, function(err, purchased) {
 			if (err)
 				res.send(err);
+            var subject="You have done a transaction on behalf of boading!!!"
+            var message="<p>Thank you for doing following transaction </p><p>Amount: "+req.body.amount+"</p><p>Description: "+req.body.text+"</p><p>Date: "+dateFormat(req.body.date, "yyyy-mm-dd")+"</p>"
+            console.log('------------------------about to send mail to'+req.session.email)
 
-			// get and return all the todos after you create another
+            sendMail( req.session.email,subject,message)
 			getPurchased(res);
 		});
 

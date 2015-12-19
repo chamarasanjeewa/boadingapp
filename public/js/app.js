@@ -2,8 +2,14 @@
     'use strict';
 angular.module('boadingBudgetApp', ['ionic','ngMessages']);
 
- angular.module('boadingBudgetApp').config(['$stateProvider', '$urlRouterProvider',function ($stateProvider, $urlRouterProvider)
+
+ angular.module('boadingBudgetApp').config(['$stateProvider', '$urlRouterProvider','$httpProvider',function ($stateProvider, $urlRouterProvider,$httpProvider)
    {
+
+$httpProvider.defaults.useXDomain = true;
+delete $httpProvider.defaults.headers.common['X-Requested-With'];
+  $httpProvider.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+
 $stateProvider
     .state('signin', {
       url: '/signin',
@@ -86,10 +92,6 @@ $stateProvider
 
    $urlRouterProvider.otherwise('/signin');
 }
-
-
-
-
 
  ]);
 

@@ -2,7 +2,9 @@
     'use strict';
 angular.module('boadingBudgetApp').factory('PurchaseService',PurchaseService);
 PurchaseService.$inject = ['$http'];
-var apiUrl='https://bmann.herokuapp.com';
+//var apiUrl='https://bmann.herokuapp.com';
+var apiUrl='http://localhost:8080';
+
 function PurchaseService($http) {
     return {
       get : function() {

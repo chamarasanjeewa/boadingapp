@@ -47,22 +47,28 @@ app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-M
 // routes ======================================================================
 require('./app/routes.js')(app);
 
-
-app.all('*', function(req, res, next) {
-       res.header("Access-Control-Allow-Origin", "*");
-       res.header("Access-Control-Allow-Headers", "X-Requested-With");
-       res.header('Access-Control-Allow-Headers', 'Content-Type');
-    
-    console.log(req.session)
-    if ((!(/^\/auth/g.test(req.url))) && (!req.session)) {
-        console.log('in app.all------------------: Unauthorized')
-        res.send(401)
-    }
-    else
-    {
-        return next()
-    }
+app.all("/api/*", function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Cache-Control, Pragma, Origin, Authorization, Content-Type, X-Requested-With");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST");
+    return next();
 });
+
+// app.all('*', function(req, res, next) {
+//        res.header("Access-Control-Allow-Origin", "*");
+//        res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//        res.header('Access-Control-Allow-Headers', 'Content-Type');
+    
+//     console.log(req.session)
+//     if ((!(/^\/auth/g.test(req.url))) && (!req.session)) {
+//         console.log('in app.all------------------: Unauthorized')
+//         res.send(401)
+//     }
+//     else
+//     {
+//         return next()
+//     }
+// });
 
 
 
