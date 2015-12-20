@@ -261,10 +261,10 @@ console.log('signedd in user user password'+signInUser.password)
 				res.send(err);
             var subject="You have done a transaction on behalf of boading!!!"
             var message="<p>Thank you for doing following transaction </p><p>Amount: "+req.body.amount+"</p><p>Description: "+req.body.text+"</p><p>Date: "+dateFormat(req.body.date, "yyyy-mm-dd")+"</p>"
-           // console.log('------------------------about to send mail to'+req.session.email)
+            console.log('------------------------about to send mail to'+req.session.email)
 
-            //sendMail( req.session.email,subject,message)
-			getPurchased(res);
+           sendMail( req.session.email,subject,message)
+             res.json(purchased);
 		});
 
 	});
