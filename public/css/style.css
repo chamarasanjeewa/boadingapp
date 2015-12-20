@@ -30,4 +30,14 @@ label.item.valid-lr {
   height: 28px;
   stroke: #444;
   fill: #444;
+    margin-top:3px;
+
 }
+
+/*.item-select {
+   // width: 75%; *//* Or whatever you'd like the width to be *//*
+}
+
+.item-select select {
+    left: 14%;
+}*/

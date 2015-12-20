@@ -1,0 +1,33 @@
+
+    <ion-view cache-view="false" view-title="Purchased info list">
+
+        <ion-content>
+            <button type="button" class="button button-block button-positive" ng-click="getPurchasedInfo()" >
+                click to see list
+            </button>
+
+            <div class="row" >
+                <div class="col bold-text">Item</div>
+                <div class="col bold-text">Cost</div>
+                <div class="col bold-text">Billed by</div>
+                <div class="col bold-text">Purchased On</div>
+            </div>
+            <div class="row" ng-repeat="item in itemList">
+                <div class="col">{{item.text}}</div>
+                <div class="col ">{{item.amount}}</div>
+                <div class="col">{{item.userProfileId.firstName}}</div>
+                <div class="col">{{item.date}}</div>
+            </div>
+            <div class="row" >
+                <div class="col bold-text">Total expenses</div>
+                <div class="col bold-text">{{totalSum}}</div>
+                <div class="col"></div>
+
+            </div>
+            <p class="text-center">
+                <a href="#/tabs/home">Home</a>
+            </p>
+
+        </ion-content>
+    </ion-view>
+

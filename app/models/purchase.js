@@ -1,26 +1,26 @@
-
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var UserProfileSchema = new Schema({
 
-    firstName: String,
-    lastName:String,
-    email: String,
-    phoneNumber: String,
-    createdDate : Date,
-    updatedDate:Date,
-    user:{type: Schema.Types.ObjectId, ref: 'user'},
+var PurchasedGoodSchema=new Schema({
+    text : {type : String, default: ''},
+    amount: Number,// 	userId:{type : String, default: ''},
+    modifiedDate :Date,
+    userProfileId:{type: Schema.Types.ObjectId, ref: 'userprofile'},
+    purchasedDate:Date,
     createdOn : Date,
     createdBy:{type: Schema.Types.ObjectId, ref: 'userprofile'},
     updatedOn:Date,
     updatedBy:{type: Schema.Types.ObjectId, ref: 'userprofile'},
     deletedOn:Boolean,
-    deletedBy:{type: Schema.Types.ObjectId, ref: 'userprofile'}
-});
-var UserProfile=mongoose.model('userprofile', UserProfileSchema);
-module.exports = UserProfile;
+    deletedBy:{type: Schema.Types.ObjectId, ref: 'userprofile'},
+    categoryId:Number
 
-UserProfileSchema.pre('save', function(next) {
+})
+
+var PurchasedGood=mongoose.model('purchasedgood', PurchasedGoodSchema);
+module.exports = PurchasedGood;
+
+PurchasedGoodSchema.pre('save', function(next) {
     // get the current date
     var currentDate = new Date();
 

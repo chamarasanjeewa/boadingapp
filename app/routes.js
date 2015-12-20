@@ -1,4 +1,4 @@
-var purchasedGood = require('./models/todo');
+var purchasedGood = require('./models/purchase');
 var UserModel = require('./models/user.js');
 var UserProfileModel = require('./models/userProfile.js');
 var nodemailer = require('nodemailer');
@@ -10,13 +10,52 @@ var logincontroller=require('./controllers/account.js');
 
 
 function getPurchased(res){
+    var start = new Date(2015, 11, 1);
+    var end = new Date(2015, 12, 30);
+    purchasedGood.aggregate([
+        {
+            $match: {purchasedDate: {$gte: start, $lt: end}}
 
-    purchasedGood.find({})
+        }
+    ], function (err, result) {
+        if (err) {
+            console.log(err)
+
+        } else {
+            console.log('result is===='+result)
+
+            res.json(result);
+        }
+    });
+
+  /*  purchasedGood.aggregate([
+        {
+            $match: {
+                purchasedDate: {$gt: new Date(2015, 12,3)}
+            }
+        },
+        {
+            $group: {
+                _id: null,
+                count: {$sum: 1}
+            }
+        }
+    ], function (err, result) {
+        if (err) {
+           // next(err);
+        } else {
+            console.log('result is===='+result)
+            res.json(result);
+        }
+    });*/
+
+   /* purchasedGood.find({purchasedDate: {$gte: new Date(2015, 12, 1), $lt: new Date(2015, 12, 31)}})
         .populate('userProfileId')
         .exec(function(error, purchasedItemList) {
+            console.log('-----------------------purchaseditems'+purchasedItemList)
             res.json(purchasedItemList);
-   
-        })
+
+        })*/
 
 };
 
@@ -88,7 +127,8 @@ newUser.save(function(err) {
             firstName: user.firstName,// todo hash it
             lastName: user.lastName,
             phoneNumber:user.phoneNumber,
-            user:userId
+            user:userId,
+            createdBy:userId
         });
 
         newUserProfile.save(function(err) {
@@ -212,12 +252,15 @@ console.log('signedd in user user password'+signInUser.password)
 	// create todo and send back all todos after creation
 
 	app.post('/api/purchased', function(req, res) {
-		// create a todo, information comes from AJAX request from Angular
-        purchasedGood.create({
+
+        console.log('-----------categoryId------------'+req.body.categoryId+'-------------')
+		 purchasedGood.create({
 			text : req.body.text,
 			amount: req.body.amount,
 			purchasedDate:req.body.date,
-            userProfileId:req.session.userProfileId
+            categoryId:req.body.categoryId,
+            userProfileId:req.session.userProfileId,
+            createdBy:req.session.userProfileId
 
 		}, function(err, purchased) {
 			if (err)

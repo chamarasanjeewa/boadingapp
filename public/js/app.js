@@ -13,12 +13,12 @@ delete $httpProvider.defaults.headers.common['X-Requested-With'];
 $stateProvider
     .state('signin', {
       url: '/signin',
-      templateUrl: 'templates/sign-in.html',
+      templateUrl: 'signin.html',
       controller: 'SignInCtrl'
     })
     .state('register', {
       url: '/register',
-      templateUrl: 'templates/register.html',
+      templateUrl: 'register.html',
       controller: 'RegisterCtrl'
     })
     .state('forgotpassword', {
@@ -28,42 +28,28 @@ $stateProvider
     .state('tabs', {
       url: '/tab',
       abstract: true,
-      templateUrl: 'templates/tabs.html'
+      templateUrl: 'tabs.html'
     })
     .state('tabs.home', {
       url: '/home',
       views: {
         'home-tab': {
-          templateUrl: 'templates/home.html',
+          templateUrl: 'home.html',
           controller: 'HomeTabCtrl'
         }
       }
     })
     .state('tabs.list', {
+      cache: false,
       url: '/list',
       views: {
         'home-tab': {
-          templateUrl: 'templates/purchasedList.html',
-          controller: 'purchasedListController'
+          templateUrl: 'purchasedList.html',
+         controller: 'purchasedListController'
         }
       }
     })
-    .state('tabs.facts', {
-      url: '/facts',
-      views: {
-        'home-tab': {
-          templateUrl: 'templates/facts.html'
-        }
-      }
-    })
-    .state('tabs.facts2', {
-      url: '/facts2',
-      views: {
-        'home-tab': {
-          templateUrl: 'templates/facts2.html'
-        }
-      }
-    })
+
     .state('tabs.about', {
       url: '/about',
       views: {
@@ -72,22 +58,7 @@ $stateProvider
         }
       }
     })
-    .state('tabs.navstack', {
-      url: '/navstack',
-      views: {
-        'about-tab': {
-          templateUrl: 'templates/nav-stack.html'
-        }
-      }
-    })
-    .state('tabs.contact', {
-      url: '/contact',
-      views: {
-        'contact-tab': {
-          templateUrl: 'templates/contact.html'
-        }
-      }
-    });
+
 
 
    $urlRouterProvider.otherwise('/signin');
