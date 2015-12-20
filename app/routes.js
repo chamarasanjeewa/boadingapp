@@ -3,18 +3,33 @@ var UserModel = require('./models/user.js');
 var UserProfileModel = require('./models/userProfile.js');
 var nodemailer = require('nodemailer');
 var passwordHash = require('password-hash');
-
 var requestify = require('requestify');
 var dateFormat = require('dateformat');
 var logincontroller=require('./controllers/account.js');
 
 
-function getPurchased(res){
-    var start = new Date(2015, 11, 1);
-    var end = new Date(2015, 12, 30);
+
+function getPurchased(res,options){
+console.log('inside get purchased');
+    console.log('options----------'+options)
+
+    var filter={start:'',end:''};
+    var currentDate=new Date();
+
+    options.year=(options.year!=undefined)?options.year:currentDate.getFullYear();
+    options.month=(options.month!=undefined)?options.month:currentDate.getMonth();
+    var lastDate= new Date(options.year, options.month+1, 0);
+    console.log('====year'+options.year+'----month'+options.month+'---lastdate'+lastDate);
+
+    filter.start= new Date(options.year,options.month, 1);
+    filter.end=lastDate;
+
+    console.log('----------------filter start'+filter.start)
+    console.log('----------------filter end'+filter.end)
+
     purchasedGood.aggregate([
         {
-            $match: {purchasedDate: {$gte: start, $lt: end}}
+            $match: {purchasedDate: {$gte: filter.start, $lt: filter.end}}
 
         }
     ], function (err, result) {
@@ -23,40 +38,12 @@ function getPurchased(res){
 
         } else {
             console.log('result is===='+result)
-
-            res.json(result);
+            var purchased={}
+            purchased.options=options;
+            purchased.list=result;
+            res.json(purchased);
         }
     });
-
-  /*  purchasedGood.aggregate([
-        {
-            $match: {
-                purchasedDate: {$gt: new Date(2015, 12,3)}
-            }
-        },
-        {
-            $group: {
-                _id: null,
-                count: {$sum: 1}
-            }
-        }
-    ], function (err, result) {
-        if (err) {
-           // next(err);
-        } else {
-            console.log('result is===='+result)
-            res.json(result);
-        }
-    });*/
-
-   /* purchasedGood.find({purchasedDate: {$gte: new Date(2015, 12, 1), $lt: new Date(2015, 12, 31)}})
-        .populate('userProfileId')
-        .exec(function(error, purchasedItemList) {
-            console.log('-----------------------purchaseditems'+purchasedItemList)
-            res.json(purchasedItemList);
-
-        })*/
-
 };
 
 function signInUser(req,res){
@@ -221,8 +208,15 @@ console.log('signedd in user user password'+signInUser.password)
 	});
 
 	app.get('/api/purchased', function(req, res) {
-       	// use mongoose to get all purchased items in the database
-		getPurchased(res);
+         var options={year:undefined,month:undefined};
+        options.year= req.param('year');
+        options.month= req.param('month');
+        console.log('-----------------inside api')
+        console.log('-----------------inside YEAR '+options.year)
+
+
+        // use mongoose to get all purchased items in the database
+		getPurchased(res,options);
 	});
 
     app.post('/api/userNameExists', function(req, res) {
@@ -267,9 +261,9 @@ console.log('signedd in user user password'+signInUser.password)
 				res.send(err);
             var subject="You have done a transaction on behalf of boading!!!"
             var message="<p>Thank you for doing following transaction </p><p>Amount: "+req.body.amount+"</p><p>Description: "+req.body.text+"</p><p>Date: "+dateFormat(req.body.date, "yyyy-mm-dd")+"</p>"
-            console.log('------------------------about to send mail to'+req.session.email)
+           // console.log('------------------------about to send mail to'+req.session.email)
 
-            sendMail( req.session.email,subject,message)
+            //sendMail( req.session.email,subject,message)
 			getPurchased(res);
 		});
 

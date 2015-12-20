@@ -7,11 +7,12 @@ var apiUrl='https://bmann.herokuapp.com';
 
 function PurchaseService($http) {
     return {
-      get : function() {
-        return $http.get('/api/purchased');
+      get : function(options) {
+
+          return $http.get('/api/purchased?year='+options.year+'&month='+options.month);
       },
-      create : function(todoData) {
-        return $http.post(apiUrl+'/api/purchased', todoData);
+      create : function(data) {
+        return $http.post(apiUrl+'/api/purchased', data);
         //ret return $http.post('/api/purchased', todoData);
 
       },
