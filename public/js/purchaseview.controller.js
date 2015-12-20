@@ -31,67 +31,8 @@ function HomeTabCtrl($scope,$state,PurchaseService) {
 
 
 
-(function () {
-    'use strict';
-angular.module('boadingBudgetApp').controller('RegisterCtrl',RegisterCtrl);
-RegisterCtrl.$inject = ['$scope','$state','PurchaseService'];
-
-function RegisterCtrl($scope, $state,PurchaseService) {
-  $scope.loading=false;
-  $scope.register = function(user) {
-      $scope.loading=true;
-    PurchaseService.register(user)
-			.success(function(data) {
-
-				$state.go('signin');
-           $scope.loading=false;
-			}).error(function(data) {
-				console.log('error')
-            $scope.loading=false;
-			});
-   
-  };
-  
-};
-})();
-
-(function () {
-    'use strict';
-angular.module('boadingBudgetApp').controller('purchasedListController',purchasedListController);
-purchasedListController.$inject = ['$scope','$state','PurchaseService'];
-
-function purchasedListController($scope,$state,PurchaseService) {
-    $scope.loading = true;
-    $scope.totalSum=0;
-
-    $scope.getPurchasedInfo=function(){
-        PurchaseService.get()
-            .success(function(data) {
-                $scope.itemList = data;
-                $scope.loading = false;
-                $scope.totalSum = Object.keys($scope.itemList).map(function(k){
-                    return +$scope.itemList[k].amount;
-                }).reduce(function(a,b){ return a + b },0);
-
-            });
-
-    }
-
-    $scope.$on('$ionicView.afterEnter', function(){
-
-        $scope.getPurchasedInfo();
-
-    });
 
 
-
-
-
-}
-
-
-
-  })();
 
 
 
