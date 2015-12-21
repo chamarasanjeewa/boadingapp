@@ -1,5 +1,5 @@
 
-    <ion-view view-title="Sign-In">
+    <ion-view view-title="Sign In">
         <ion-content class="padding">
             <form name="signinForm" novalidate ng-submit="signIn(user)">
 
@@ -14,9 +14,11 @@
                                required>
                     </label>
 
-                    <div class="form-errors" ng-messages="signinForm.username.$error" >
-                        <div class="form-error"  ng-message="minlength">Field must contain at least 6 characters</div>
-                    </div>
+                    <span class="form-errors" ng-messages="signinForm.username.$error" >
+                        <span class="form-error"  ng-message="minlength">Field must contain at least 6 characters</span>
+                          <span class="form-error"  ng-message="required">required</span>
+
+                    </span>
 
 
                     <label class="item item-input"
@@ -29,9 +31,12 @@
                                ng-maxlength="25"
                                required>
                     </label>
-                    <div class="form-errors" ng-messages="signinForm.password.$error" >
-                        <div class="form-error" ng-messages-include="templates/form-errors.html" ng-message="maxlength"></div>
-                    </div>
+                    <span class="form-errors" ng-messages="signinForm.password.$error" >
+                        <span class="form-error"  ng-message="maxlength">maximum length is 25</span>
+                        <span class="form-error"  ng-message="minlength">maximum length is 5</span>
+                        <span class="form-error"  ng-message="required">required</span>
+
+                    </span>
 
                 </div>
                 </div>

@@ -11,15 +11,14 @@ var logincontroller=require('./controllers/account.js');
 
 function getPurchased(res,options){
 console.log('inside get purchased');
-    console.log('options----------'+options)
 
     var filter={start:'',end:''};
     var currentDate=new Date();
 
     options.year=(options.year!=undefined)?options.year:currentDate.getFullYear();
     options.month=(options.month!=undefined)?options.month:currentDate.getMonth();
-    var lastDate= new Date(options.year, options.month+1, 0);
-    console.log('====year'+options.year+'----month'+options.month+'---lastdate'+lastDate);
+    var lastDate= new Date(options.year, ( parseInt(options.month)+1), 0);
+    console.log('-----------------------------year '+options.year+'---- '+options.month+'---lastdate'+lastDate);
 
     filter.start= new Date(options.year,options.month, 1);
     filter.end=lastDate;
@@ -33,18 +32,26 @@ console.log('inside get purchased');
 
         }
     ], function (err, result) {
-        if (err) {
+        if (err)
             console.log(err)
 
-        } else {
             console.log('result is===='+result)
+        purchasedGood.populate( result, { "path": "userProfileId" }, function(err,results) {
+            if (err) throw err;
+           // console.log( JSON.stringify( results) );
             var purchased={}
             purchased.options=options;
-            purchased.list=result;
-            res.json(purchased);
-        }
+            purchased.list=results;
+            return res.send(purchased);
+        });
+
+
+
     });
 };
+function callBack(){
+    console.log('callback')
+}
 
 function signInUser(req,res){
 

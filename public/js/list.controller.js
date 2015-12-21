@@ -12,7 +12,7 @@
         $scope.options.month=($scope.options.month!=undefined)?$scope.options.month:currentDate.getMonth();
 
         $scope.getPurchasedInfo=function(){
-
+            $scope.itemList={}
             PurchaseService.get($scope.options)
                 .success(function(data) {
                     $scope.options=data.options;

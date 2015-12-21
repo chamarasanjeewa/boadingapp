@@ -8,9 +8,9 @@
                         <span class="input-label">First name</span>
                         <input type="text" name="firstName" ng-model="user.firstName" required>
                     </label>
-                    <div class="form-errors" ng-messages="registerForm.firstName.$error" >
+                    <span class="form-errors" ng-messages="registerForm.firstName.$error" >
                         <span class="form-error" ng-messages-include="templates/form-errors.html" ></span>
-                    </div>
+                    </span>
                     <label class="item item-input">
                         <span class="input-label">Last name</span>
                         <input type="text" ng-model="user.lastName">
@@ -19,41 +19,41 @@
                         <span class="input-label">Email</span>
                         <input name="email" type="email" ng-model="user.email" required>
                     </label>
-                    <div class="form-errors" ng-messages="registerForm.email.$error"  >
-                        <div class="form-error" ng-messages-include="templates/form-errors.html" ></div>
-                    </div>
+                    <span class="form-errors" ng-messages="registerForm.email.$error"  >
+                        <span class="form-error" ng-messages-include="templates/form-errors.html" ></span>
+                    </span>
                     <label class="item item-input" ng-class="{ 'has-error' : registerForm.phoneNumber.$invalid}">
                         <span class="input-label">Phone number</span>
                         <input type="text"  name ="phoneNumber" placeholder="712188862" ng-model="user.phoneNumber" ng-maxlength="9" ng-minlength="9" required>
                     </label>
-                    <div class="form-errors" ng-messages="registerForm.phoneNumber.$error"  >
-                        <div class="form-error" ng-message="minlength">This field is must be at least 9 characters.</div>
-                        <div class="form-error" ng-message="maxlength">This field is must be at least 9 characters.</div>
+                    <span class="form-errors" ng-messages="registerForm.phoneNumber.$error"  >
+                        <span class="form-error" ng-message="minlength">This field is must be at least 9 characters.</span>
+                        <span class="form-error" ng-message="maxlength">This field is must be at least 9 characters.</span>
 
-                    </div>
+                    </span>
                     <label class="item item-input" ng-class="{ 'has-error' : registerForm.username.$invalid}">
                         <span class="input-label">User Name</span>
                         <input type="text" name="username"  ng-model="user.username" username-available ng-minlength="6" required>
 
                     </label>
-                    <div ng-if="registerForm.$pending.usernameExists">checking....</div>
-                    <div ng-if="registerForm.$error.usernameExists" class="form-error">username exists already</div>
-                    <div class="form-errors" ng-messages="registerForm.username.$error"  >
-                        <div class="form-errors" ng-messages="signinForm.username.$error" >
-                            <div class="form-error"  ng-message="minlength">Field must contain at least 6 characters</div>
-                        </div>
-                        <div class="form-errors" ng-messages="signinForm.username.$error" >
-                            <div class="form-error"  ng-message="required">Required</div>
-                        </div>
+                    <span ng-if="registerForm.$pending.usernameExists">checking....</span>
+                    <span ng-if="registerForm.$error.usernameExists" class="form-error">username exists already</span>
+                    <span class="form-errors" ng-messages="registerForm.username.$error"  >
+                        <span class="form-errors" ng-messages="signinForm.username.$error" >
+                            <span class="form-error"  ng-message="minlength">Field must contain at least 6 characters</span>
+                        </span>
+                        <span class="form-errors" ng-messages="signinForm.username.$error" >
+                            <span class="form-error"  ng-message="required">Required</span>
+                        </span>
 
-                    </div>
+                    </span>
                     <label class="item item-input" ng-class="{ 'has-error' : registerForm.password.$invalid}">
                         <span class="input-label">Password</span>
                         <input type="password"  name="password" ng-model="user.password" required>
                     </label>
-                    <div class="form-errors" ng-messages="registerForm.password.$error"  >
-                        <div class="form-error" ng-messages-include="templates/form-errors.html" ></div>
-                    </div>
+                    <span class="form-errors" ng-messages="registerForm.password.$error"  >
+                        <span class="form-error" ng-messages-include="templates/form-errors.html" ></span>
+                    </span>
                 </div>
 
                 <div class="padding">
