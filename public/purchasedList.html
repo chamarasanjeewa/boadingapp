@@ -4,7 +4,7 @@
         <ion-content>
 
             <div class="row">
-                <div class="col">
+                <div class="col col-50">
                     <label class="item item-input item-select">
                         <span class="input-label"></span>
 
@@ -14,11 +14,11 @@
                 </select>
                     </label>
                 </div>
-                <div class="col">
+                <div class="col col-50">
                     <label class="item item-input item-select">
                         <span class="input-label"></span>
 
-                        <select ng-model="options.month" ng-change="getPurchasedInfo()">
+                 <select ng-model="options.month" ng-change="getPurchasedInfo()">
                     <option  value="0">January</option>
                     <option  value="1" >February</option>
                     <option  value="2">March</option>
@@ -47,12 +47,15 @@
                 <div class="col bold-text">Cost</div>
                 <div class="col bold-text">Billed by</div>
                 <div class="col bold-text">Purchased On</div>
+                <div class="col bold-text"></div>
             </div>
             <div class="row" ng-repeat="item in itemList">
                 <div class="col">{{item.text}}</div>
                 <div class="col ">{{item.amount}}</div>
                 <div class="col">{{item.userProfileId.firstName}}</div>
                 <div class="col">{{item.purchasedDate|date:'MM/dd/yyyy'}}</div>
+                <div class="col" ><button ng-click="delete(item)" class="delete"></button></div>
+
             </div>
             <div class="row" >
                 <div class="col bold-text">Total expenses</div>

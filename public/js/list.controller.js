@@ -5,6 +5,7 @@
 
     function purchasedListController($scope,$state,PurchaseService) {
         $scope.loading = true;
+        $scope.test="test";
         $scope.totalSum=0;
         $scope.options={};
         var currentDate=new Date();
@@ -27,19 +28,22 @@
                 });
 
         }
-        $scope.$parent.$on( "$ionicView.enter", function( scopes, states ) {
+
+        $scope.delete=function(item){
+            PurchaseService.delete(item._id).success(function(data) {
+                $scope.getPurchasedInfo();
+            }).error(function(err){
+                $scope.getPurchasedInfo();
+                console.log('error deleting record'+err)
+            });
+        }
+
+        $scope.$parent.$on( "$ionicView.enter", function() {
             $scope.getPurchasedInfo();
             /*if( states.fromCache && states.stateName == "tabs.list" ) {
                 $scope.getPurchasedInfo();
             }*/
         });
-
-
-
-
-
     }
-
-
 
 })();

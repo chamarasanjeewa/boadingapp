@@ -6,8 +6,7 @@ var passwordHash = require('password-hash');
 var requestify = require('requestify');
 var dateFormat = require('dateformat');
 var logincontroller=require('./controllers/account.js');
-
-
+var mongoose = require('mongoose');
 
 function getPurchased(res,options){
 console.log('inside get purchased');
@@ -278,13 +277,19 @@ console.log('signedd in user user password'+signInUser.password)
 
 	// delete a todo
 	app.delete('/api/purchased/:purchased_id', function(req, res) {
-		purchased.remove({
-			_id : req.params.purchased_id
-		}, function(err, purchased) {
-			if (err)
-				res.send(err);
+        console.log('----------delete id of'+req.params.purchased_id)
+        var id=mongoose.Types.ObjectId(req.params.purchased_id);
+        console.log('----------mongoose id'+id)
+        purchasedGood.find({ _id :id }).remove().exec(function(err, result) {
+            if (err){
+                res.send(err);
+                console.log('----------mongoose id'+err)
 
-			getPurchased(res);
+            }
+
+                res.send(result);
+
+
 		});
 	});
 
