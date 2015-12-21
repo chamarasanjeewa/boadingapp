@@ -27,11 +27,11 @@
                 });
 
         }
-
-        $scope.$on('$ionicView.afterEnter', function(){
-
+        $scope.$parent.$on( "$ionicView.enter", function( scopes, states ) {
             $scope.getPurchasedInfo();
-
+            /*if( states.fromCache && states.stateName == "tabs.list" ) {
+                $scope.getPurchasedInfo();
+            }*/
         });
 
 
