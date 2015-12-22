@@ -8,8 +8,7 @@ var dateFormat = require('dateformat');
 var logincontroller=require('./controllers/account.js');
 var mongoose = require('mongoose');
 
-function getPurchased(res,options){
-console.log('inside get purchased');
+function getPurchased(req,res,options){
 
     var filter={start:'',end:''};
     var currentDate=new Date();
@@ -17,13 +16,9 @@ console.log('inside get purchased');
     options.year=(options.year!=undefined)?options.year:currentDate.getFullYear();
     options.month=(options.month!=undefined)?options.month:currentDate.getMonth();
     var lastDate= new Date(options.year, ( parseInt(options.month)+1), 0);
-    console.log('-----------------------------year '+options.year+'---- '+options.month+'---lastdate'+lastDate);
 
     filter.start= new Date(options.year,options.month, 1);
     filter.end=lastDate;
-
-    console.log('----------------filter start'+filter.start)
-    console.log('----------------filter end'+filter.end)
 
     purchasedGood.aggregate([
         {
@@ -33,13 +28,20 @@ console.log('inside get purchased');
     ], function (err, result) {
         if (err)
             console.log(err)
-
-            console.log('result is===='+result)
-        purchasedGood.populate( result, { "path": "userProfileId" }, function(err,results) {
+         purchasedGood.populate( result, { "path": "userProfileId" }, function(err,results) {
             if (err) throw err;
-           // console.log( JSON.stringify( results) );
-            var purchased={}
+             var purchased={}
             purchased.options=options;
+             for(var i = 0; i<results.length; i++) {
+                 console.log('-------'+ req.session.userProfileId)
+             console.log(results[i].userProfileId._id)
+
+                 if(results[i].userProfileId._id==req.session.userProfileId){
+                     results[i].deletable=true;
+                 }else{
+                     results[i].deletable=false;
+                 }
+             }
             purchased.list=results;
             return res.send(purchased);
         });
@@ -55,6 +57,7 @@ function callBack(){
 function signInUser(req,res){
 
 }
+
 
 
     var transporter = nodemailer.createTransport({
@@ -170,7 +173,7 @@ module.exports = function(app) {
                 };
              
                 if(selectedUser!=null){
-console.log('signedd in user user password'+signInUser.password)
+
                   //var signedInuserHashedPassword= passwordHash.generate(signInUser.password);
                   var isVerified=passwordHash.verify(signInUser.password, selectedUser.passwordHash); // true
                   
@@ -217,12 +220,9 @@ console.log('signedd in user user password'+signInUser.password)
          var options={year:undefined,month:undefined};
         options.year= req.param('year');
         options.month= req.param('month');
-        console.log('-----------------inside api')
-        console.log('-----------------inside YEAR '+options.year)
-
 
         // use mongoose to get all purchased items in the database
-		getPurchased(res,options);
+		getPurchased(req,res,options);
 	});
 
     app.post('/api/userNameExists', function(req, res) {

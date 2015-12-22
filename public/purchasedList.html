@@ -4,21 +4,21 @@
         <ion-content>
 
             <div class="row">
-                <div class="col col-50">
+                <div class="col col-25">
                     <label class="item item-input item-select">
                         <span class="input-label"></span>
 
-                        <select ng-model="options.year" ng-change="getPurchasedInfo()">
+                        <select class="select-left" ng-model="options.year" ng-change="getPurchasedInfo()">
                     <option  value="2015">2015</option>
                     <option  value="2016" >2016</option>
                 </select>
                     </label>
                 </div>
-                <div class="col col-50">
+                <div class="col col-25">
                     <label class="item item-input item-select">
                         <span class="input-label"></span>
 
-                 <select ng-model="options.month" ng-change="getPurchasedInfo()">
+                 <select class="select-left" ng-model="options.month" ng-change="getPurchasedInfo()">
                     <option  value="0">January</option>
                     <option  value="1" >February</option>
                     <option  value="2">March</option>
@@ -46,7 +46,7 @@
                 <div class="col bold-text">Item</div>
                 <div class="col bold-text">Cost</div>
                 <div class="col bold-text">Billed by</div>
-                <div class="col bold-text">Purchased On</div>
+                <div class="col bold-text">Date</div>
                 <div class="col bold-text"></div>
             </div>
             <div class="row" ng-repeat="item in itemList">
@@ -54,7 +54,7 @@
                 <div class="col ">{{item.amount}}</div>
                 <div class="col">{{item.userProfileId.firstName}}</div>
                 <div class="col">{{item.purchasedDate|date:'MM/dd/yyyy'}}</div>
-                <div class="col" ><button ng-click="delete(item)" class="delete"></button></div>
+                <div class="col" ><button ng-click="delete(item)" ng-if="item.deletable"  class="delete"></button></div>
 
             </div>
             <div class="row" >
@@ -64,7 +64,7 @@
 
             </div>
             <p class="text-center">
-                <a href="#/tab/home">Home</a>
+               <!-- <a href="#/tab/home">Home</a>-->
             </p>
 
         </ion-content>

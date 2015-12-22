@@ -19,7 +19,7 @@ function HomeTabCtrl($scope,$state,PurchaseService) {
                 .success(function (data) {
                     $scope.loading = false;
                     $state.go("tabs.list");
-                    $scope.getPurchasedInfo();
+
                 }).error(function (err) {
                     $scope.loading = false;
                     console.log('error in saving data' + err)
