@@ -30,11 +30,14 @@
         }
 
         $scope.delete=function(item){
+            $scope.loading = true;
             PurchaseService.delete(item._id).success(function(data) {
                 $scope.getPurchasedInfo();
+               // $scope.loading = false;
             }).error(function(err){
                 $scope.getPurchasedInfo();
                 console.log('error deleting record'+err)
+               // $scope.loading = false;
             });
         }
 

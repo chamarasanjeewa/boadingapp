@@ -22,9 +22,12 @@
                     </span>
                     <label class="item item-input">
                         <span class="input-label">Description</span>
-                        <input type="text" ng-model="formData.text" >
+                        <input type="text" name="text" ng-model="formData.text" required>
 
                     </label>
+                     <span class="form-errors" ng-messages="purchaseForm.text.$error"  >
+                        <span class="form-error" ng-messages-include="templates/form-errors.html" ng-message="required"></span>
+                    </span>
                     <label class="item item-input item-select">
                         <span class="input-label">Category</span>
                         <select ng-model="formData.categoryId">

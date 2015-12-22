@@ -37,11 +37,8 @@
 
             </div>
 
-
-           <!-- <button type="button" class="button button-block button-positive" ng-click="getPurchasedInfo()" >
-                click to see list
-            </button>-->
-
+            <ion-spinner ng-show="loading" icon="spiral">
+            </ion-spinner>
             <div class="row" >
                 <div class="col bold-text">Item</div>
                 <div class="col bold-text">Cost</div>
@@ -49,7 +46,8 @@
                 <div class="col bold-text">Date</div>
                 <div class="col bold-text"></div>
             </div>
-            <div class="row" ng-repeat="item in itemList">
+            <div class="row" ng-repeat="item in itemList" >
+
                 <div class="col">{{item.text}}</div>
                 <div class="col ">{{item.amount}}</div>
                 <div class="col">{{item.userProfileId.firstName}}</div>
