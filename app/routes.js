@@ -171,7 +171,7 @@ module.exports = function(app) {
             .exec(function(err, selectedUser) {
                 if (err) {
 
-                    throw err
+                   res.send(err);
                 };
              
                 if(selectedUser!=null){
@@ -233,7 +233,7 @@ module.exports = function(app) {
             .exec(function (err, selectedUser) {
                 if (err) {
                     console.log('error finding username')
-                    throw err
+                    res.send(err);
                 }
                 ;
                 if (selectedUser == null) {
