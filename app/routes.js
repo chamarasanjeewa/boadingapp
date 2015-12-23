@@ -27,9 +27,11 @@ function getPurchased(req,res,options){
         }
     ], function (err, result) {
         if (err)
-            console.log(err)
+        res.send(err);
+
          purchasedGood.populate( result, { "path": "userProfileId" }, function(err,results) {
-            if (err) throw err;
+            if (err)  res.send(err);
+
              var purchased={}
             purchased.options=options;
              for(var i = 0; i<results.length; i++) {
