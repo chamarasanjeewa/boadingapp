@@ -43,7 +43,7 @@ $stateProvider
       cache: false,
       url: '/list',
       views: {
-        'home-tab': {
+        'about-tab': {
           templateUrl: 'purchasedList.html',
          controller: 'purchasedListController'
         }
