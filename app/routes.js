@@ -10,8 +10,8 @@ var mongoose = require('mongoose');
 
 function getPurchased(req,res,options){
 
-    var filter={start:'',end:''};
-    var currentDate=new Date();
+    var filter={start:'',end:''}; 
+    var  currentDate=new Date();
 
     options.year=(options.year!=undefined)?options.year:currentDate.getFullYear();
     options.month=(options.month!=undefined)?options.month:currentDate.getMonth();
