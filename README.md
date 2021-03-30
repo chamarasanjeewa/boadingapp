@@ -1,8 +1,6 @@
 # Node Todo App
 
-A Node app built with MongoDB and Angular. For demonstration purposes and a tutorial.
-
-Node provides the RESTful API. Angular provides the frontend and accesses the API. MongoDB stores like a hoarder.
+Budget coordination at bording is always a problem, this is created to avoid miscommuincation via managing it in a central location
 
 ## Requirements
 
